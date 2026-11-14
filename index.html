@@ -21,6 +21,21 @@
 </head>
 <body>
 <header class="top"><div class="wrap"><div class="toprow"><div><div class="eyebrow">SELETOR INTERATIVO • ANO-MODELO 2027</div><h1>Encontre seu próximo SUV.<br>Sem ficar refém da ficha técnica.</h1><p>Defina o que é indispensável, proíba o que não aceita, ajuste pesos e chegue a poucos finalistas. Referência de comparação: seu BYD Song Plus DM-i 2023.</p></div><div class="topactions"><button class="btn ghost" data-action="exportprefs">↓ Salvar minhas escolhas</button></div></div><div class="stats"><div class="stat"><strong id="heroTotal">28</strong><span>configurações catalogadas*</span></div><div class="stat"><strong id="heroRemaining">—</strong><span>passam pelos seus filtros</span></div><div class="stat"><strong id="heroExcluded">0</strong><span>vetos individuais</span></div><div class="stat"><strong>R$ 300 mil</strong><span>teto original da pesquisa</span></div></div></div></header>
+<section class="wrap" aria-label="Privacidade da medição de acessos">
+  <details id="access-privacy" open style="margin:16px 0;background:#fff;border:1px solid #cddae3;border-radius:12px;padding:12px 15px">
+    <summary style="cursor:pointer;font-weight:700">Privacidade e medição de acessos</summary>
+    <p>Você pode autorizar a medição de acessos para ajudar a entender quantas vezes o comparador é aberto e de onde vêm as visitas. O comparador funciona com qualquer escolha.</p>
+    <p>Com sua autorização, a Cloudflare recebe a conexão e estima cidade, estado ou região e país pelo IP. A medição usa o prefixo da rede para gerar um código que muda diariamente. O IP completo não é salvo pelo contador. A localização pode estar incorreta, por exemplo, com VPN ou rede móvel.</p>
+    <p>A Cloudflare hospeda os dados da medição no leste da América do Norte. O painel de acesso restrito exibe contagens agregadas.</p>
+    <p>Os códigos ficam na base ativa até a limpeza do dia seguinte. As contagens diárias ficam por 30 dias, incluindo o dia atual. A Cloudflare pode manter cópias recuperáveis por mais 7 dias no plano gratuito. A preferência fica neste navegador por até 180 dias e pode ser alterada aqui a qualquer momento. A alteração vale para as próximas medições.</p>
+    <p>Responsável pela medição: <span>Marcio</span>. Para exercer seus direitos ou tirar dúvidas, <a href="mailto:marciofmar@yahoo.com.br">entre em contato</a>.</p>
+    <button type="button" class="btn soft" id="allow-access-count" disabled>Autorizar medição</button>
+    <button type="button" class="btn" id="deny-access-count" disabled>Recusar medição</button>
+    <p id="access-count-status" class="hint" role="status">Medição desativada.</p>
+  </details>
+</section>
+<script src="./acessos.js" data-endpoint="https://meu-proximo-suv-analytics.marciofmar.workers.dev/v1/pageview" defer></script>
+
 <div class="wrap"><div class="alert"><span style="font-size:17px">⚑</span><div><strong>Importante sobre a confiabilidade:</strong> preços são referências comerciais de datas distintas (revisão técnica em 14/11/2026), algumas promoções podem ter expirado, e nem todos os dados são verificados para a versão exata. Química LFP <strong>não equivale</strong> a comprovação de segurança da bateria. Notas são apenas um auxílio de triagem, não substituem ensaios, seguro, test-drive ou proposta comercial. *O catálogo inclui o Song Plus 2023 de referência e uma versão 2027 não confirmada, que ficam fora do ranking inicial.</div></div></div>
 <div class="wrap workspace">
 <aside class="sheet filterPanel" id="filterPanel"><div class="panelHead"><div style="display:flex;justify-content:space-between;gap:8px;align-items:start"><div><h2>Suas regras</h2><p>Filtre primeiro. Priorize depois.</p></div><button class="btn sm filtersToggle" data-action="mobileFilters" style="display:none">Filtros ▾</button></div><button class="btn sm mobileClose" style="display:none; margin-top:12px" data-action="closeMobileFilters">✕ Fechar filtros</button><div class="presetGrid" id="presets"></div></div>
