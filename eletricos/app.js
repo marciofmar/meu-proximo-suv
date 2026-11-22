@@ -361,9 +361,10 @@
   function mudarAba(aba, gravar = true) {
     document.body.dataset.aba = aba;
     document.querySelectorAll('.abas button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.aba === aba)));
-    document.title = aba === 'eletricos' ? 'Meu próximo SUV · Elétricos até R$ 300 mil' : 'Meu próximo SUV · Laboratório de escolha PHEV 2027';
+    document.title = { eletricos: 'Meu próximo SUV · Elétricos até R$ 300 mil', emplacamentos: 'Meu próximo SUV · Emplacamentos' }[aba] || 'Meu próximo SUV · Laboratório de escolha PHEV 2027';
     if (aba === 'eletricos' && !montado) { montado = true; montarFiltros(); desenhar(); }
-    if (gravar) history.replaceState(null, '', aba === 'eletricos' ? '#eletricos' : location.pathname + location.search);
+    if (aba === 'emplacamentos' && window.EMP) window.EMP.mostrar();
+    if (gravar) history.replaceState(null, '', aba === 'hibridos' ? location.pathname + location.search : `#${aba}`);
   }
 
   // ---------- Eventos ----------
@@ -437,11 +438,12 @@
     if (e.key === 'ArrowRight') abrirLuz(luz.id, luz.i + 1);
   });
 
-  window.addEventListener('hashchange', () => mudarAba(location.hash === '#eletricos' ? 'eletricos' : 'hibridos', false));
+  const abaDoHash = () => ({ '#eletricos': 'eletricos', '#emplacamentos': 'emplacamentos' }[location.hash] || 'hibridos');
+  window.addEventListener('hashchange', () => mudarAba(abaDoHash(), false));
 
   $('evResumoModelos').textContent = window.EV_MODELOS.length;
   $('evResumoVersoes').textContent = CARROS.length;
   $('evResumoQuesitos').textContent = ITENS.length;
   $('evResumoFiltrado').textContent = CARROS.length;
-  mudarAba(location.hash === '#eletricos' ? 'eletricos' : 'hibridos', false);
+  mudarAba(abaDoHash(), false);
 })();

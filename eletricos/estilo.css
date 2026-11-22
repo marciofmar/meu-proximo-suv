@@ -1,5 +1,5 @@
 /* Abas e painel de SUVs elétricos. Usa as variáveis de cor definidas em index.html. */
-body[data-aba="eletricos"] .phevOnly { display: none !important; }
+body:not([data-aba="hibridos"]) .phevOnly { display: none !important; }
 body:not([data-aba="eletricos"]) .evOnly { display: none !important; }
 
 .abas { display: flex; gap: 6px; padding: 14px 0 2px; }
