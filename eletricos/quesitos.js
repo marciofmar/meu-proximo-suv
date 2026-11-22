@@ -57,7 +57,6 @@ window.EV_GRUPOS = [
     ['capacidadeUtil', 'Capacidade útil', 'n', 'kWh', 'mais'],
     ['quimica', 'Química', 't'],
     ['tensao', 'Tensão do sistema', 'n', 'V'],
-    ['descargaMax', 'Potência máxima de descarga', 'n', 'kW', 'mais'],
     ['consumoInmetro', 'Consumo Inmetro', 'n', 'kWh/100 km', 'menos'],
     ['autonomiaInmetro', 'Autonomia Inmetro', 'n', 'km', 'mais'],
     ['notaPbev', 'Nota no PBEV', 't'],
@@ -74,7 +73,8 @@ window.EV_GRUPOS = [
     ['conector', 'Padrão do conector', 't'],
     ['carregadorPortatil', 'Carregador portátil incluso', 'e'],
     ['wallbox', 'Wallbox incluso', 'e'],
-    ['v2l', 'V2L (alimentar aparelhos externos)', 'e']
+    ['v2l', 'V2L (alimentar aparelhos externos)', 'e'],
+    ['descargaMax', 'Potência máxima em V2L', 'n', 'kW', 'mais']
   ]},
   { id: 'chassi', nome: 'Chassi e direção', itens: [
     ['suspensaoDianteira', 'Suspensão dianteira', 't'],

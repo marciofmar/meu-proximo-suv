@@ -5,13 +5,16 @@
 //   - "comum" vale para todas as versões; cada versão só traz o que muda.
 //   - número precedido de "?" é dado a confirmar ou de outro mercado (ver a fonte): aparece marcado e não concorre ao destaque de melhor valor.
 //   - equipamento: serie | opcional | ausente | confirmar, com detalhe depois de ":".
-//   - quesito sem linha = não informado nas fontes consultadas. Nada foi estimado.
+//   - em quesitos numéricos, " | " acrescenta contexto. Use "—" se o dado comparável não foi informado.
+//   - quesito sem linha = não informado nas fontes consultadas.
 (function () {
   const EC = 'https://www.encontracarros.com.br/wp-content/uploads/';
   const AU = 'https://www.autoo.com.br/fotos/';
   const RC = 'https://revistacarro.com.br/wp-content/uploads/2026/09/vw-id4-pro-2027-';
   const BY = 'https://www.byd.com/material/byd-site/br/product/byd-yuan-pro/yuan-2026/';
   const AE = 'https://autoentusiastas.com.br/ae/wp-content/uploads/';
+
+  const LEVANTAMENTO = ['Levantamento Técnico — SUVs Elétricos no Brasil', null, 'arquivo fornecido'];
 
   window.EV_MODELOS = [
     {
@@ -24,9 +27,10 @@
         ['Autoentusiastas', 'https://autoentusiastas.com.br/2026/11/omoda-e5-2027-eletrico-precos-versoes-alcance/', '04/11/2026'],
         ['Primo Auto', 'https://primoauto.com.br/novo-omoda-e5-2027-precos-elite-prestige-comparativo', '04/11/2026'],
         ['Autoranking', 'https://autoranking.com.br/omoda-e5-precos-versoes-autonomia-equipamentos/', '05/11/2026'],
-        ['Mobiauto', 'https://www.mobiauto.com.br/revista/omoda-e5-2027-fica-ate-r-50-mil-mais-barato-e-melhora-velocidade-de-recarga/11948', '04/11/2026']
+        ['Mobiauto', 'https://www.mobiauto.com.br/revista/omoda-e5-2027-fica-ate-r-50-mil-mais-barato-e-melhora-velocidade-de-recarga/11948', '04/11/2026'],
+        LEVANTAMENTO
       ],
-      alertas: ['O lote de lançamento (R$ 149.990 e R$ 179.990) já foi encerrado.', 'O consumo Inmetro ainda não foi divulgado.'],
+      alertas: ['O lote de lançamento (R$ 149.990 e R$ 179.990) já foi encerrado.', 'O levantamento não identifica medição de consumo PBEV da linha 2027.'],
       comum: `
 anoModelo=2027 @1
 origem=Marca chinesa, importado @4
@@ -76,7 +80,39 @@ portaMalasRebatido=1079 @5,6,7
 lugares=5 @5
 cd=0.281 @5
 direcao=Pinhão e cremalheira, assistência elétrica na coluna @5
-isofix=serie @8`,
+isofix=serie @8
+concessionarias=100 | Rede da marca em 25 estados, em julho de 2026 @9
+larguraRetrovisores=2102 @9
+anguloEntrada=19.7 @9
+anguloSaida=24.9 @9
+diametroGiro=10.9 @9
+reboque=— | Homologação brasileira não informada. Sem capacidade homologada na referência europeia. @9
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal na linha 2027. @9
+quimica=LFP @9
+tensao=— | Arquitetura de classe 400 V. Tensão nominal de 370 V na referência do pacote de cerca de 61 kWh. Tensão exata da linha 2027 não informada. @9
+notaPbev=A (relativa e absoluta) @9
+regenMax=?100 | Até 100 kW, referência da plataforma. Sem confirmação para a linha brasileira 2027. @9
+niveisRegen=3 níveis ajustáveis @9
+umPedal=ausente: sem parada total no modo regenerativo @9
+carregadorPortatil=confirmar: inclusão de série não informada @9
+wallbox=ausente: sem inclusão de série, sujeito a campanha @9
+amortecimentoAdaptativo=ausente: amortecedores passivos @9
+crashTest=5 estrelas Euro NCAP e ANCAP (outros mercados). Sem avaliação no Latin NCAP. @9
+estacionamentoAuto=ausente @9
+headUp=ausente @9
+vozPortugues=serie @9
+app=serie: Carlinko, com habilitação na concessionária. Climatização, travas, vidros e consulta da bateria e dos pneus. @9
+ota=confirmar: ativação no Brasil não confirmada @9
+wifi=ausente: sem hotspot integrado @9
+navegacao=serie: GPS embarcado @9
+filtroAr=Filtro de partículas finas (PM2.5/N95) @9
+memoria=ausente @9
+encostoReclinavel=ausente: encosto fixo e banco rebatível @9
+vidrosAcusticos=serie: para-brisa e laterais dianteiros @9
+volanteAquecido=ausente @9
+macanetas=ausente: convencionais @9
+barrasTeto=ausente: sem barras longitudinais elevadas @9
+descargaMax=3.3 @9`,
       versoes: [
         { id: 'elite', nome: 'Elite', dados: `
 preco=159990 @1
@@ -114,7 +150,10 @@ multimidia=Tela tátil de 12,3 pol @5,6
 alertaFadiga=ausente @5,6
 ajustePassageiro=ausente: manual @6
 lombar=ausente @5,6
-retrovisoresRebatimento=ausente: elétricos e aquecidos, sem rebatimento @5,6` },
+retrovisoresRebatimento=ausente: elétricos e aquecidos, sem rebatimento @5,6
+leitorPlacas=ausente: versão sem pacote ADAS @9
+consumoInmetro=— | Eficiência declarada de 5,5 km/kWh, equivalente a cerca de 18,2 kWh/100 km. O levantamento não identifica esse valor como medição PBEV da versão. @9
+autonomiaWltp=— | O levantamento informa 278 km no Inmetro. Os até 430 km WLTP referem-se à Prestige. @9` },
         { id: 'prestige', nome: 'Prestige', dados: `
 preco=184990 @1
 capacidadeNominal=60.9 @1
@@ -151,7 +190,8 @@ farolAltoAuto=serie @1
 cargaUtil=518 @5
 pesoBruto=2260 @5
 multimidia=Tela UHD de 15,6 pol @5,6
-alertaFadiga=serie: monitoramento do motorista (DMS) @5,6` }
+alertaFadiga=serie: monitoramento do motorista (DMS) @5,6
+leitorPlacas=serie: integrado ao ADAS @9` }
       ],
       fotos: [
         ['Frente', EC + '2026/11/omoda-e5_2027_07.jpg'], ['Dianteira 3/4', EC + '2026/11/omoda-e5_2027.jpg'],
@@ -172,7 +212,8 @@ alertaFadiga=serie: monitoramento do motorista (DMS) @5,6` }
         ['AUTOO (preço atual)', 'https://www.autoo.com.br/gwm-ora-5-j-custa-r-165990-mas-est-sem-estoque-na-loja-oficial/', '21/11/2026'],
         ['GWM Newhouse (concessionária oficial)', 'https://www.gwmnewhouse.com.br/modelo/ora-5/', 'sem data'],
         ['Car.Blog.BR', 'https://www.car.blog.br/2026/06/gwm-ora-5-suv-eletrico-preco-fotos.html', '24/06/2026'],
-        ['AutoHub', 'https://www.autohubcars.com.br/lancamentos-gwm-ora-5', '20/09/2026']
+        ['AutoHub', 'https://www.autohubcars.com.br/lancamentos-gwm-ora-5', '20/09/2026'],
+        LEVANTAMENTO
       ],
       alertas: ['Em 21/11/2026 aparecia sem estoque na loja oficial. Confirme a disponibilidade.'],
       comum: `
@@ -211,7 +252,7 @@ dcMax=120 @1
 tempoDc=20 min (30% a 80%) @2
 acMax=11 @1
 tempoAc=8,5 h (0% a 100%) @2
-v2l=serie: 6 kW @2
+v2l=serie @2,9
 suspensaoDianteira=McPherson independente @1
 suspensaoTraseira=Multilink independente @1
 freios=Discos ventilados na frente, sólidos atrás @1
@@ -262,7 +303,33 @@ cores=Cinza Zenith, Preto Khalifa, Branco Cristal, Electric Blue @2
 potenciaMotores=1 motor dianteiro, 204 cv @6,7
 conector=CCS Tipo 2 @6,7
 wifi=serie: Wi-Fi compartilhado @6
-niveisRegen=Ajustável, quantidade não informada @7,8`,
+niveisRegen=Ajustável, quantidade não informada @7,8
+descargaMax=6 @2,9
+concessionarias=130 | Rede da marca no encerramento de 2025, referência da operação em 2026. @9
+portaMalasDianteiro=0 @9
+reboque=— | Homologação brasileira não informada. @9
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @9
+tensao=— | Arquitetura de classe 400 V. Tensão nominal não informada. @9
+consumoInmetro=— | Eficiência declarada de 6,0 km/kWh, equivalente a cerca de 16,7 kWh/100 km. Medição de consumo PBEV não identificada no levantamento. @9
+notaPbev=A @9
+umPedal=serie @9
+carregadorPortatil=serie @9
+wallbox=serie: incluído na oferta comercial da GWM Brasil @9
+amortecimentoAdaptativo=ausente: amortecedores passivos @9
+crashTest=Sem avaliação no Euro NCAP e no Latin NCAP @9
+alertaFadiga=serie @9
+farolAltoAuto=serie @9
+estacionamentoAuto=confirmar: item não listado na ficha brasileira @9
+headUp=ausente @9
+chaveDigital=serie: aplicativo My GWM e chave presencial @9
+lombar=confirmar: item não listado na ficha brasileira @9
+bancosAquecidos=ausente @9
+massagem=ausente @9
+encostoReclinavel=ausente: encosto fixo e banco rebatível @9
+vidrosAcusticos=confirmar: isolamento acústico não especificado @9
+volanteAquecido=ausente @9
+macanetas=ausente: convencionais @9
+barrasTeto=ausente: sem barras longitudinais elevadas @9`,
       versoes: [{ id: 'unica', nome: 'Versão única', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2026/06/ORA-5.jpg'], ['Dianteira 3/4 (outra cor)', EC + '2026/06/ORA-3_4-DIANTEIRA.jpeg'],
@@ -286,7 +353,8 @@ niveisRegen=Ajustável, quantidade não informada @7,8`,
         ['Leapmotor Saga (concessionária)', 'https://www.leapmotorsaga.com.br/blog/leapmotor-b10-ficha-tecnica', '28/03/2026'],
         ['Auto+ TV (avaliação)', 'https://www.automaistv.com.br/avaliacao/leapmotor-b10-e-seu-tio-preferido-mas-que-faz-a-piada-do-pave-avaliacao/', '08/06/2026'],
         ['ABC do ABC (avaliação)', 'https://abcdoabc.com.br/leapmotor-b10-2', '28/07/2026'],
-        ['Encontracarros (C10 e B10)', 'https://www.encontracarros.com.br/leapmotor-c10-e-b10/', '12/08/2026']
+        ['Encontracarros (C10 e B10)', 'https://www.encontracarros.com.br/leapmotor-c10-e-b10/', '12/08/2026'],
+        LEVANTAMENTO
       ],
       alertas: ['As fontes divergem sobre o ajuste elétrico do banco do motorista. Confira no carro.'],
       comum: `
@@ -310,7 +378,7 @@ tracao=Traseira @1
 zeroCem=8 @1
 velocidadeMaxima=170 @1
 modosConducao=Comfort, Standard, Sport @2
-niveisRegen=Ajustável, quantidade não informada @2
+niveisRegen=3 níveis ajustáveis @11
 capacidadeNominal=56.2 @1
 quimica=LFP @2
 autonomiaInmetro=288 @1
@@ -376,7 +444,36 @@ navegacao=serie @6,9
 arCondicionado=Automático digital, 1 zona @8,6
 saidasTraseiras=serie @10
 bancosAquecidos=ausente @10
-bancosVentilados=ausente @10`,
+bancosVentilados=ausente @10
+garantiaCarro=6 anos @11
+concessionarias=?38 | Cerca de 38 pontos de venda da marca em meados de 2026. @11
+reboque=?750 | Homologação europeia. Homologação brasileira não informada. @11
+estepe=Kit de reparo de pneus @11
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @11
+tensao=— | Arquitetura de classe 400 V. Tensão nominal não informada. @11
+consumoInmetro=— | Eficiência declarada de 5,1 km/kWh, equivalente a cerca de 19,6 kWh/100 km. Medição de consumo PBEV não identificada no levantamento. @11
+notaPbev=A @11
+v2l=serie @11
+descargaMax=3.3 @11
+amortecimentoAdaptativo=ausente: amortecedores passivos @11
+crashTest=5 estrelas Euro NCAP (novembro de 2025, outro mercado). Adultos 93%, crianças 93%, usuários vulneráveis 84% e assistências 85%. @11
+isofix=serie: inclui padrão i-Size @11
+leitorPlacas=serie: integrado ao ADAS @11
+estacionamentoAuto=confirmar: item não listado na ficha brasileira @11
+headUp=ausente @11
+som=6 alto-falantes @11
+filtroAr=Filtro de partículas @11
+ajustePassageiro=ausente: ajuste manual @11
+lombar=confirmar: item não listado na versão brasileira @11
+memoria=ausente @11
+massagem=ausente @11
+encostoReclinavel=confirmar: banco rebatível, reclinação não listada @11
+tampaEletrica=ausente @11
+vidrosAcusticos=confirmar: isolamento acústico não especificado @11
+iluminacaoAmbiente=confirmar: item não listado na versão brasileira @11
+volanteAquecido=ausente @11
+retrovisoresRebatimento=confirmar: ajuste elétrico e aquecimento presentes, rebatimento não listado @11
+barrasTeto=ausente: versão BEV básica @11`,
       versoes: [{ id: 'unica', nome: 'Versão única', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AE + '2026/07/AE-Leapmotor-B10-7699.jpg'], ['Frente', AE + '2026/07/AE-Leapmotor-B10-7701.jpg'],
@@ -398,7 +495,8 @@ bancosVentilados=ausente @10`,
         ['Vrum', 'https://www.vrum.com.br/avaliacoes/2025/07/7213430-geely-ex5-chega-ao-brasil-com-bom-pacote-de-equipamentos-e-preco-competitivo.html', '31/07/2025'],
         ['Autoentusiastas (primeiras impressões)', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/', '30/07/2025'],
         ['Canaltech (teste)', 'https://canaltech.com.br/carros/teste-geely-ex5-e-suv-com-jeitao-de-chines-e-dna-de-volvo/', '30/07/2025'],
-        ['Verificar Auto', 'https://verificarauto.com.br/carros-eletricos/geely-ex5/', 'sem data']
+        ['Verificar Auto', 'https://verificarauto.com.br/carros-eletricos/geely-ex5/', 'sem data'],
+        LEVANTAMENTO
       ],
       alertas: ['O bônus de R$ 10 mil na versão Pro valia até 31/10/2026, sem renovação encontrada.', 'A nota 5 estrelas é do Euro NCAP, para o carro vendido na Europa.'],
       comum: `
@@ -432,7 +530,7 @@ tempoDc=20 min (30% a 80%) @1
 acMax=11 @1
 tempoAc=6,1 h (10% a 100%) @1
 niveisRegen=4 níveis @1
-v2l=serie: também V2V @1
+v2l=serie: também V2V, até 6 kW @1,10
 suspensaoDianteira=McPherson @1
 suspensaoTraseira=Multilink @1
 freios=A disco nas quatro rodas @1
@@ -471,7 +569,23 @@ lanternas=LED @1
 macanetas=serie: retráteis automáticas @1
 cores=Preto Carbon, Branco Storm, Cinza Ash, Prata Moon @1
 conector=CCS2 @9
-wallbox=opcional: bônus de pré-venda ou financiamento @7,3`,
+wallbox=opcional: bônus de pré-venda ou financiamento @7,3
+diametroGiro=?10.8 | Referência da plataforma GEA/Galaxy E5. Medida brasileira não informada. @10
+portaMalasDianteiro=0 @10
+cargaUtil=?415 | Valor aproximado de referência internacional. Carga útil brasileira não discriminada. @10
+reboque=?750 | Homologação internacional. Homologação brasileira não informada. @10
+pesoBruto=?2180 | Valor aproximado de referência internacional. PBT brasileiro não informado. @10
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @10
+tensao=— | Arquitetura de classe 400 V. Tensão nominal não informada. @10
+notaPbev=A @10
+umPedal=ausente: sem parada total no modo regenerativo @10
+carregadorPortatil=confirmar: ofertado em campanhas de lançamento, inclusão de série não indicada @10
+amortecimentoAdaptativo=ausente: amortecedores passivos @10
+estacionamentoAuto=ausente @10
+lombar=confirmar: ajuste específico não listado na ficha brasileira @10
+vidrosAcusticos=confirmar: isolamento acústico não especificado @10
+volanteAquecido=confirmar: item não listado na ficha brasileira @10
+descargaMax=3.3 @10`,
       versoes: [
         { id: 'pro', nome: 'Pro', dados: `
 preco=207800 @2
@@ -497,7 +611,11 @@ headUp=ausente @1
 som=6 alto-falantes @1
 teto=ausente @1
 tampaEletrica=ausente @1
-iluminacaoAmbiente=ausente: só iluminação interna em LED @1` },
+iluminacaoAmbiente=ausente: só iluminação interna em LED @1
+autonomiaWltp=?430 | Homologação internacional da versão com rodas de 18 pol. @10
+alertaFadiga=ausente: sem monitor de fadiga de série @10
+memoria=ausente @10
+bancosAquecidos=ausente @10` },
         { id: 'max', nome: 'Max', dados: `
 preco=227800 @2
 massa=1765 @1
@@ -524,7 +642,10 @@ som=Flyme Premium, 16 alto-falantes @1
 teto=serie: panorâmico, cortina elétrica @1
 tampaEletrica=serie @1
 iluminacaoAmbiente=serie: 256 cores @1
-bancosAquecidos=serie: dianteiros @7,8` }
+bancosAquecidos=serie: dianteiros @7,8
+autonomiaWltp=?410 | Homologação internacional da versão com rodas de 19 pol. @10
+memoria=serie: motorista, com entrada e saída ativa @10
+barrasTeto=serie: longitudinais integradas @10` }
       ],
       fotos: [
         ['Dianteira 3/4', AE + '2025/07/CAPA-1.jpg'], ['Dianteira 3/4 (branco)', EC + '2025/06/geely-ex5-2026.jpg'],
@@ -547,7 +668,8 @@ bancosAquecidos=serie: dianteiros @7,8` }
         ['Encontracarros (C10 e B10)', 'https://www.encontracarros.com.br/leapmotor-c10-e-b10/', '12/08/2026'],
         ['Carwow Espanha (outro mercado)', 'https://www.carwow.es/leapmotor/c10/caracteristicas-tecnicas', 'sem data'],
         ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/leapmotor/c10/2024/style/features-and-specs', 'sem data'],
-        ['Auto-Data (outro mercado)', 'https://www.auto-data.net/es/leapmotor-c10-69.9-kwh-218hp-bev-55063', 'sem data']
+        ['Auto-Data (outro mercado)', 'https://www.auto-data.net/es/leapmotor-c10-69.9-kwh-218hp-bev-55063', 'sem data'],
+        LEVANTAMENTO
       ],
       alertas: ['As fotos de bancos e porta-malas são da versão híbrida REEV.'],
       comum: `
@@ -657,7 +779,19 @@ carregadorPortatil=serie: T2M2 @7
 carplayAndroid=confirmar: listado na Espanha; ficha brasileira não cita @8
 espacoPernas=?951 @9
 volanteAquecido=confirmar: aquecido na versão Design da Espanha @8
-barrasTeto=confirmar: longitudinais na versão da Espanha @8`,
+barrasTeto=confirmar: longitudinais na versão da Espanha @8
+cd=?0.29 | Valor aproximado de referência internacional. Medida brasileira não informada. @11
+modosConducao=Conforto (Relaxado), Padrão, Esportivo e Personalizado @11
+consumoInmetro=— | Eficiência declarada de 4,8 km/kWh, equivalente a cerca de 20,8 kWh/100 km. Medição de consumo PBEV não identificada no levantamento. @11
+notaPbev=A @11
+umPedal=serie: modo configurável @11
+amortecimentoAdaptativo=ausente: amortecedores passivos @11
+estacionamentoAuto=ausente @11
+headUp=ausente @11
+vozPortugues=serie: comandos do LeapOS @11
+massagem=ausente @11
+vidrosAcusticos=confirmar: isolamento acústico não especificado @11
+descargaMax=3.3 @11`,
       versoes: [{ id: 'bev', nome: 'Elétrico (BEV)', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2025/11/leapmotor-c10_01.jpg'], ['Frente', EC + '2026/08/leapmotor-c10_18.jpg'],
@@ -682,16 +816,18 @@ barrasTeto=confirmar: longitudinais na versão da Espanha @8`,
         ['Autos Segredos', 'https://www.autossegredos.com.br/marcas/mg/mg-s5-ev-e-o-suv-eletrico-escolhido-para-reestreia-no-brasil/', '12/07/2025'],
         ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/car-reviews/2026-mg-s5-ev-review', '07/03/2026'],
         ['Paultan Malásia (outro mercado)', 'https://paultan.org/research/compare/mg-s5/com-2026-vs-lux-2026/', '11/2026'],
-        ['Wikipedia (MGS5 EV)', 'https://en.wikipedia.org/wiki/MGS5_EV', '08/11/2026']
+        ['Wikipedia (MGS5 EV)', 'https://en.wikipedia.org/wiki/MGS5_EV', '08/11/2026'],
+        LEVANTAMENTO,
+        ['MG Motor Brasil (ficha técnica)', 'https://www.mgmotoroficial.com.br/pdfs/mgs5-ficha.pdf', 'consultada em 21/11/2026']
       ],
-      alertas: ['Um anúncio de concessionária mostra a Luxury por R$ 219.800. Vale negociar.', 'A química da bateria e o pacote ADAS da Comfort divergem entre as fontes. Confirme na concessionária.'],
+      alertas: ['Um anúncio de concessionária mostra a Luxury por R$ 219.800. Vale negociar.', 'As fontes divergem sobre a química da bateria e sobre as funções de faixa e leitura de placas da Comfort.'],
       comum: `
 anoModelo=2026 @1
 precoCondicao=Preço de tabela sugerido @1
 garantiaCarro=7 anos ou 150.000 km @2
 garantiaBateria=8 anos ou 160.000 km @2
 comprimento=4476 @2
-largura=1836 @2
+largura=1849 @14
 altura=1620 @2
 entreEixos=2730 @2
 portaMalas=453 @2
@@ -702,7 +838,7 @@ potenciaMotores=1 motor traseiro @2
 potenciaTotal=205 @5
 torque=350 @2
 tracao=Traseira @3
-velocidadeMaxima=190 @3
+velocidadeMaxima=170 @14
 capacidadeNominal=64 @6,7,2,8
 autonomiaInmetro=351 @1
 autonomiaWltp=480 @4
@@ -726,60 +862,87 @@ app=serie: iSMART @4
 chaveDigital=serie: Digital Key @4
 arCondicionado=Digital @4
 revestimentoBancos=Couro sintético com tecido @2
-volanteAquecido=serie @4
 farois=Full LED @2
 lanternas=LED com barra conectada @2
 origem=China; montagem em Horizonte (CE) anunciada @8
-vaoLivre=?164 @10
+vaoLivre=145 | Sem carga. Com carga, 136 mm. @14
 reboque=?750 @10
-estepe=Kit de reparo na Austrália e na Malásia; Brasil não informado @10,11
+estepe=Kit de reparo de pneus @14
 modosConducao=Divergem: Eco, Normal, Sport ou Normal, Sport, Comfort, Neve, Personalizado @6,9
 capacidadeUtil=62.1 @7
 quimica=A confirmar: Verificar Auto diz LFP; Wikipedia diz NMC @6,12
-tensao=?400 @11
+tensao=395 @14
 umPedal=serie @8
 tempoAc=Cerca de 9 h (0% a 100%, wallbox de 7,4 kW) @6
 conector=CCS2 em DC; tipo AC não informado @6
 freios=ABS com EBD; tipo de disco não informado @9
 crashTest=5 estrelas Euro NCAP 2025 (outro mercado) @8,10
 multimidia=Tela de 12,8 pol, Android Auto e CarPlay sem fio @6,2
-usb=2 USB-C na frente e 1 atrás na Austrália e na Malásia; Brasil não informado @10,11
+usb=2 USB-C na frente e 1 atrás @14
 navegacao=serie: nativa @9
-saidasTraseiras=confirmar: presentes na Austrália e na Malásia @10,11
+saidasTraseiras=serie @14
 ajustePassageiro=confirmar: manual na Austrália e na Malásia @10,11
-bancosVentilados=confirmar: citados sem indicar a versão @9
-barrasTeto=confirmar: presentes na Austrália @10
-cores=Branco pérola, metálicas e vermelho MG (lista incompleta) @6`,
+barrasTeto=serie: rack de teto @14
+cores=Branco pérola, metálicas e vermelho MG (lista incompleta) @6
+descargaMax=?2.2 | Referência da plataforma MG MSP. A ficha brasileira confirma V2L, sem indicar a potência. @13
+concessionarias=24 | Rede da marca no início da operação, no fim de 2025. O levantamento cita meta de 70 lojas ao longo de 2026. @13
+diametroGiro=?10.5 | Referência global da plataforma MSP. Medida brasileira não informada. @13
+portaMalasDianteiro=0 @13
+cd=?0.27 | Referência global. Medida brasileira não informada. @13
+consumoInmetro=— | Estimativa de 17,7 kWh/100 km pela divisão de 62,1 kWh úteis por 351 km de autonomia Inmetro. @13
+notaPbev=A @13
+niveisRegen=3 níveis (Baixo, Médio e Alto), mais os modos Adaptativo e um pedal @13
+amortecimentoAdaptativo=ausente: amortecedores passivos @13
+controleDescida=confirmar: item não listado na ficha brasileira @13
+autoHold=serie @13,14
+estacionamentoAuto=ausente @13
+headUp=ausente @13
+vozPortugues=serie @13
+wifi=serie: hotspot integrado ao MG iSMART @13
+filtroAr=Filtro PM2.5 @13
+massagem=ausente @13
+encostoReclinavel=ausente: encosto fixo, bipartido e rebatível @13
+vidrosAcusticos=confirmar: isolamento acústico não especificado @13
+macanetas=ausente: convencionais @13`,
       versoes: [
         { id: 'comfort', nome: 'Comfort', dados: `
 preco=218800 @1
 zeroCem=6.3 @1
 airbags=6 @2
-massa=1685 @2
-rodas=Aro 18, pintadas de preto @2
+massa=1705 @13,14
+rodas=Liga leve, aro 17 @14
 ajusteMotorista=ausente: manual @4
 som=4 alto-falantes @4
 camera360=ausente @4
-nivelAdas=Sem pacote ADAS @2
-acc=ausente @2
+nivelAdas=ACC, frenagem autônoma e assistentes de faixa @14
+acc=serie @14
 inducao=ausente @2
 teto=ausente @2
 tampaEletrica=ausente @2
-v2l=confirmar: fonte não separa versões @8
+v2l=serie @13,14
 ota=confirmar: fonte não separa versões @6
 centralizacaoFaixa=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
-frenagemAutonoma=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
-alertaColisao=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
-pontoCego=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
-trafegoCruzado=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+frenagemAutonoma=serie @14
+alertaColisao=serie: alerta frontal @14
+pontoCego=ausente @14
+trafegoCruzado=ausente @14
 leitorPlacas=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
-retrovisoresRebatimento=confirmar: rebatíveis na versão da Malásia @11` },
+retrovisoresRebatimento=ausente @14
+pneus=215/60 R17 @13,14
+bancosVentilados=ausente @14
+lombar=ausente @13
+memoria=ausente @13
+bancosAquecidos=ausente @13
+volanteAquecido=ausente @13,14
+iluminacaoAmbiente=confirmar: item não listado de série na Comfort @13
+alertaFadiga=ausente: monitoramento da atenção exclusivo da Luxury @14
+farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14` },
         { id: 'luxury', nome: 'Luxury', dados: `
 preco=238800 @1
 zeroCem=6.3 @2,6,8
 airbags=7 @2
-massa=1791 @2
-rodas=Aro 18, diamantadas @2
+massa=1755 @13,14
+rodas=Liga leve, aro 18 @14
 ajusteMotorista=serie: elétrico, 6 posições @4
 som=6 alto-falantes @4
 nivelAdas=ADAS 2 (MG Pilot, 16 funções) @2
@@ -793,13 +956,18 @@ camera360=serie @4
 inducao=serie @2
 teto=serie: panorâmico @4
 tampaEletrica=serie: abertura sem as mãos @4
-v2l=serie @5
+v2l=serie @13,14
 ota=serie @5
 leitorPlacas=serie @9
 bancosAquecidos=serie: dianteiros @8,9
 lombar=confirmar: motorista, na versão da Austrália @10
-memoria=confirmar: sem memória na versão da Austrália @10
-retrovisoresRebatimento=confirmar: elétrico na versão da Austrália @10` }
+memoria=confirmar: item não listado na ficha brasileira @13,14
+retrovisoresRebatimento=serie: automático @14
+volanteAquecido=serie @13,14
+pneus=225/55 R18 @13,14
+bancosVentilados=serie: dianteiros @14
+alertaFadiga=serie: monitoramento da atenção do motorista (DAW) @13,14
+farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14` }
       ],
       fotos: [
         ['Dianteira 3/4', EC + '2025/12/mg-s5-2026_03.jpg'], ['Frente', EC + '2025/12/mg-s5-2026_02.jpg'],
@@ -821,7 +989,8 @@ retrovisoresRebatimento=confirmar: elétrico na versão da Austrália @10` }
         ['CNN Brasil', 'https://www.cnnbrasil.com.br/auto/baic-arcfox-t5-chega-por-r-219-990-com-252-cv-e-autonomia-de-362-km/', '11/11/2026'],
         ['Autos Segredos', 'https://www.autossegredos.com.br/marcas/baic/baic-arcfox-t5-preco-brasil-219990/', '11/11/2026'],
         ['Carros com Camanzi', 'https://carroscomcamanzi.com.br/baic-arcfox-t5-e-mais-um-suv-eletrico-que-estreia-por-r-220-mil/', '13/11/2026'],
-        ['Wikipedia (Arcfox αT5, China)', 'https://en.wikipedia.org/wiki/Arcfox_%CE%B1T5', '09/10/2026']
+        ['Wikipedia (Arcfox αT5, China)', 'https://en.wikipedia.org/wiki/Arcfox_%CE%B1T5', '09/10/2026'],
+        LEVANTAMENTO
       ],
       alertas: ['Em pré-venda: o preço vale para as primeiras 50 unidades ou até o fim de 2026.', 'Marca nova no Brasil. Confira rede, peças e assistência na sua região.', 'Parte das fotos é do modelo chinês.'],
       comum: `
@@ -852,7 +1021,7 @@ quimica=LFP @3
 tensao=800 @4
 autonomiaInmetro=362 @1
 dcMax=210 @3
-tempoDc=18 min (30% a 80%) @3
+tempoDc=18 min (30% a 80%) na fonte original. O levantamento informa menos de 17 min na mesma faixa. @3,11
 carregadorPortatil=serie: de emergência, na pré-venda @3
 wallbox=serie: 6,6 kW, na pré-venda @3
 v2l=serie: também V2V @3
@@ -889,7 +1058,54 @@ macanetas=serie: externas embutidas @1
 cores=Cinza Mineral, Preto Obsidiana, Branco Lunas @7
 cd=?0.243 @10
 crashTest=5 estrelas C-NCAP 2021, versão chinesa (outro mercado) @10
-iluminacaoAmbiente=serie @9`,
+iluminacaoAmbiente=serie @9
+garantiaCarro=6 anos ou 150.000 km @11
+garantiaBateria=8 anos ou 150.000 km @11
+vaoLivre=180 @11
+portaMalasDianteiro=0 @11
+reboque=— | Homologação brasileira não informada. @11
+estepe=Kit de reparo de pneus @11
+modosConducao=Eco, Comfort, Sport e Personalizado. Modo Neve/baixa aderência citado em algumas configurações da linha. @11
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @11
+consumoInmetro=— | Eficiência declarada de 5,6 km/kWh, equivalente a cerca de 17,9 kWh/100 km. Medição de consumo PBEV não identificada no levantamento. @11
+notaPbev=A @11
+autonomiaWltp=— | O levantamento informa 362 km no Inmetro e cita até 660 km no CLTC, ciclo chinês. @11
+niveisRegen=Ajustável pela central, quantidade não informada @11
+umPedal=serie: modo configurável @11
+acMax=6.6 @11
+tempoAc=Cerca de 10 a 11 h (0% a 100%, 6,6 kW) @11
+conector=Tipo 2 (AC) e CCS2 (DC) @11
+amortecimentoAdaptativo=ausente: amortecedores passivos @11
+direcao=Elétrica progressiva (EPS) @11
+partidaRampa=serie @11
+controleDescida=serie @11
+autoHold=serie @11
+airbags=6 | Frontais, laterais e de cortina @11
+isofix=serie @11
+estabilidade=serie: ESC e TCS @11
+tpms=serie @11
+alertaFadiga=serie @11
+pontoCego=serie @11
+leitorPlacas=confirmar: ativação não confirmada na ficha brasileira @11
+farolAltoAuto=serie @11
+sensoresEstacionamento=serie: dianteiros e traseiros @11
+estacionamentoAuto=serie: semiautomático @11
+painelDigital=— | Sem painel de instrumentos convencional. Função assumida pelo HUD de 22,8 pol. @11
+vozPortugues=confirmar: interface localizada, comandos em português não confirmados @11
+ota=serie @11
+usb=USB-A e USB-C na frente e atrás @11
+wifi=confirmar: hotspot integrado não confirmado @11
+chaveDigital=serie: smartphone via Bluetooth e chave presencial @11
+navegacao=serie @11
+saidasTraseiras=serie @11
+filtroAr=Ionizador e filtro de partículas finas @11
+lombar=serie: bancos dianteiros @11
+memoria=serie: banco do motorista @11
+encostoReclinavel=confirmar: encosto bipartido e rebatível, reclinação não confirmada @11
+vidrosAcusticos=confirmar: isolamento acústico não especificado @11
+volanteAquecido=confirmar: item não listado na ficha brasileira @11
+barrasTeto=ausente: sem barras longitudinais elevadas @11
+descargaMax=— | O levantamento cita 3,3 kW como valor típico, sem potência publicada no catálogo brasileiro. @11`,
       versoes: [{ id: 'max', nome: 'Max', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2026/11/baic-arcfox-t5-2027-04.jpg'], ['Dianteira 3/4 (estúdio)', EC + '2026/11/baic-arcfox-t5-2027-02.jpg'],
@@ -911,7 +1127,8 @@ iluminacaoAmbiente=serie @9`,
         ['Carro.blog.br (ficha)', 'https://carro.blog.br/ficha-tecnica/chevrolet/chevrolet-captiva-ev/chevrolet-captiva-ev-2026/chevrolet-captiva-ev-2026-autonomia-urbana-e-rodar-silencioso-fazem-o-suv-eletrico-facil-de-conviver', 'sem data'],
         ['Carros na Web (ficha)', 'https://www.carrosnaweb.com.br/fichadetalhe.asp?codigo=41578', 'sem data'],
         ['Elétricos Brasil', 'https://www.eletricos.app/veiculo/chevrolet-captiva-ev-premier-60-kwh-2026', '05/11/2026'],
-        ['AUTOO', 'https://www.autoo.com.br/captiva-ev-promete-mais-espaco-por-menos-que-rivais-veja-o-que-mudou/', '03/02/2026']
+        ['AUTOO', 'https://www.autoo.com.br/captiva-ev-promete-mais-espaco-por-menos-que-rivais-veja-o-que-mudou/', '03/02/2026'],
+        LEVANTAMENTO
       ],
       alertas: ['As fontes divergem sobre carregador por indução e aquecimento do banco. Confira no carro.'],
       comum: `
@@ -994,7 +1211,7 @@ farois=Full LED @2
 lanternas=Full LED @2
 macanetas=ausente: convencionais @2
 cores=Branco Lençóis, Cinza Diamantina, Azul Búzios, Dourado Jeri @4
-consumoInmetro=?19.6 @8,9
+consumoInmetro=?19.6 | O levantamento indica eficiência de 5,1 km/kWh, equivalente a cerca de 19,6 kWh/100 km. Medição PBEV não identificada. @8,9,11
 cd=0.277 @8
 partidaRampa=serie @8,9,7
 estabilidade=serie @8,9,7
@@ -1003,7 +1220,32 @@ multimidia=Tela vertical de 15,6 pol com espelhamento @8,10
 wifi=serie: roteador Wi-Fi @8,7
 navegacao=serie: GPS @7
 saidasTraseiras=serie @8,9,7
-barrasTeto=serie: longitudinais @8`,
+barrasTeto=serie: longitudinais @8
+diametroGiro=?11.2 | Estimativa baseada na plataforma. Medida brasileira não divulgada. @11
+portaMalasRebatido=— | Volume brasileiro não divulgado. O Wuling Starlight S chinês tem referência de 1.768 L até o teto. @11
+portaMalasDianteiro=0 @11
+reboque=— | Reboque não homologado nem recomendado pela fabricante no Brasil. @11
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @11
+tensao=— | Arquitetura de classe 400 V. Tensão nominal não informada. @11
+notaPbev=A @11
+autonomiaWltp=— | O levantamento informa 304 km no Inmetro. Os 510 km CLTC são do Wuling Starlight S chinês. @11
+umPedal=ausente: sem parada total no modo regenerativo @11
+tempoAc=Cerca de 9 a 10 h (0% a 100%, 6,6 kW). A GM indica cerca de 8 h entre 20% e 100%. @11
+conector=Tipo 2 (AC) e CCS2 (DC) @11
+wallbox=ausente: sem inclusão de série, sujeito a campanha ou venda como acessório @11
+v2l=ausente: sem saída V2L homologada de série no Brasil @11
+amortecimentoAdaptativo=ausente: amortecedores passivos @11
+controleDescida=ausente @11
+crashTest=Sem avaliação no Latin NCAP e no Euro NCAP @11
+alertaFadiga=confirmar: item não listado na ficha brasileira @11
+leitorPlacas=confirmar: item não listado na ficha brasileira @11
+headUp=ausente @11
+vozPortugues=ausente: comandos de voz via Apple CarPlay ou Android Auto @11
+ota=confirmar: ativação no Brasil não confirmada @11
+som=6 alto-falantes @11
+filtroAr=Filtro de partículas @11
+memoria=ausente @11
+volanteAquecido=ausente @11`,
       versoes: [{ id: 'premier', nome: 'Premier', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2025/11/chevrolet-captiva-ev-2026_03.jpg'], ['Dianteira 3/4 (outra cor)', AE + '2026/02/AE-Chevrolet-Captiva-EV-2324-e1770679679791.jpg'],
@@ -1026,7 +1268,8 @@ barrasTeto=serie: longitudinais @8`,
         ['iCarros e Webmotors (ficha, via resultado de busca)', 'https://www.webmotors.com.br/gac/aion-v/2026', '21/11/2026'],
         ['Carros na Web (ficha)', 'https://www.carrosnaweb.com.br/fichadetalhe.asp?codigo=44285', 'sem data'],
         ['Ficha Completa', 'https://www.fichacompleta.com.br/en/carros/gac/aion-v-elite-2026', 'sem data'],
-        ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/gac/aion-v/2026/luxury/features-and-specs', 'sem data']
+        ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/gac/aion-v/2026/luxury/features-and-specs', 'sem data'],
+        LEVANTAMENTO
       ],
       alertas: ['As fontes divergem sobre conexão sem fio de CarPlay e Android Auto. Teste com seu celular.'],
       comum: `
@@ -1125,14 +1368,26 @@ anguloSaida=27 @7,8
 diametroGiro=11.2 @7,8
 portaMalasRebatido=?978 @9
 tensao=?366.5 @9
-consumoInmetro=?19.2 @7
+consumoInmetro=?19.2 | O levantamento indica eficiência de 5,2 km/kWh, equivalente a cerca de 19,2 kWh/100 km. Medição PBEV não identificada. @7,10
 autonomiaWltp=?510 @9
 crashTest=5 estrelas Euro NCAP 2025 (outro mercado) @7,8
 alertaFadiga=serie @7,8
 leitorPlacas=serie @7,8
 app=serie: comandos e informações do veículo @7,8
 inducao=serie @7,8
-volanteAquecido=confirmar: aquecido na versão da Austrália @9`,
+volanteAquecido=confirmar: aquecido na versão da Austrália @9
+concessionarias=— | Cerca de 80 a 90 pontos de venda da marca em novembro de 2026. @10
+portaMalasDianteiro=0 @10
+reboque=— | Homologação brasileira não informada. @10
+capacidadeUtil=— | O levantamento só discrimina a capacidade nominal. @10
+notaPbev=A @10
+carregadorPortatil=confirmar: ofertado em campanhas e no kit de lançamento, conforme lote @10
+wallbox=ausente: sem inclusão permanente de série, sujeito a campanha @10
+amortecimentoAdaptativo=ausente: amortecedores passivos @10
+estacionamentoAuto=ausente @10
+lombar=serie: bancos dianteiros @10
+cores=Branco, Preto, Cinza, Prata e Laranja, conforme catálogo e acabamento @10
+descargaMax=3.3 @10`,
       versoes: [{ id: 'elite', nome: 'Elite', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AE + '2026/04/AE-GAC-Aion-V-4-de-46.jpg'], ['Frente', AE + '2026/04/AE-GAC-Aion-V-5-de-46.jpg'],
@@ -1154,7 +1409,8 @@ volanteAquecido=confirmar: aquecido na versão da Austrália @9`,
         ['Recarregados', 'https://recarregados.com/blog/byd-yuan-plus-awd-review-brasil', '03/10/2026'],
         ['JK Carros', 'https://jkcarros.com.br/byd-yuan-plus-awd-2027-pcd-preco-tco/', '02/09/2026'],
         ['Auto+ TV', 'https://www.automaistv.com.br/novidades/byd-yuan-plus-ganha-tracao-awd-e-0-a-100-km-h-de-porsche/', '06/04/2026'],
-        ['Wikipedia (Atto 3, outro mercado)', 'https://en.wikipedia.org/wiki/BYD_Atto_3', 'sem data']
+        ['Wikipedia (Atto 3, outro mercado)', 'https://en.wikipedia.org/wiki/BYD_Atto_3', 'sem data'],
+        LEVANTAMENTO
       ],
       alertas: ['O aquecimento dos bancos aparece no site da BYD, mas não na ficha técnica de julho.'],
       comum: `
@@ -1249,7 +1505,28 @@ tensao=?800 @9
 conector=Type 2 e CCS2 no Atto 3 europeu; Brasil não informado @9
 crashTest=5 estrelas Euro NCAP 2022, Atto 3 europeu (outro mercado) @9
 navegacao=serie: Google, com Maps e Waze @6,7,8`,
-      versoes: [{ id: 'awd', nome: 'AWD', dados: '' }],
+      versoes: [{ id: 'awd', nome: 'AWD', dados: `
+descargaMax=— | O levantamento cita de 2,2 a 3,3 kW conforme o adaptador e a tensão, sem discriminar a potência do AWD. @10
+reboque=— | Homologação brasileira não indicada. Os 750 kg citados são do Atto 3 internacional, e a BYD não recomenda reboque no Brasil segundo o levantamento. @10
+retomada80120=4.2 | Medição de pista da Quatro Rodas, julho de 2026, conforme o levantamento. @10
+capacidadeUtil=?74.9 | O levantamento indica 74,9 kWh úteis, praticamente o mesmo valor da capacidade nominal publicada. Capacidade líquida a confirmar. @10
+notaPbev=A @10
+autonomiaWltp=— | O levantamento informa 378 km no Inmetro para o AWD. Os 420 km WLTP referem-se ao FWD. @10
+niveisRegen=2 níveis (Padrão e Alto) @10
+umPedal=ausente: sem parada total no modo regenerativo @10
+tempoAc=Cerca de 7,5 h (0% a 100%, 11 kW) @10
+carregadorPortatil=serie @10
+amortecimentoAdaptativo=ausente: amortecedores passivos @10
+autoHold=serie @10
+estacionamentoAuto=ausente @10
+app=serie: BYD App, com climatização, travamento, localização e consulta da bateria @10
+wifi=serie: conectividade 4G/Wi-Fi do sistema ICS @10
+memoria=ausente @10
+massagem=ausente @10
+encostoReclinavel=ausente: encosto fixo, bipartido e rebatível @10
+volanteAquecido=ausente @10
+macanetas=ausente: convencionais @10
+barrasTeto=serie: longitudinais integradas @10` }],
       fotos: [
         ['Frente', AU + '2026/4/1280_960/byd991_08042026_89459_1280_960.jpg'], ['Dianteira 3/4', AU + '2026/4/1280_960/byd-1_06042026_89430_1280_960.jpg'],
         ['Dianteira 3/4 (estúdio)', EC + '2026/03/byd-yuan-plus_2027.jpg'], ['Traseira', AU + '2026/4/1280_960/byd55_08042026_89462_1280_960.jpg'],
@@ -1270,7 +1547,8 @@ navegacao=serie: Google, com Maps e Waze @6,7,8`,
         ['Tribuna PR', 'https://www.tribunapr.com.br/noticias/automoveis/novo-volkswagen-id4-pro-2027-preco-especificacoes-brasil/', '08/09/2026'],
         ['Mundo do Automóvel para PCD', 'https://mundodoautomovelparapcd.com.br/volkswagen-id4-pro-2027-lancamento/', '06/09/2026'],
         ['Guru dos Carros', 'https://gurudoscarros.com.br/2026/09/05/volkswagen-id4-chega-outubro-brasil-299990/', '05/09/2026'],
-        ['Wikipedia (ID.4, outros mercados)', 'https://en.wikipedia.org/wiki/Volkswagen_ID.4', 'sem data']
+        ['Wikipedia (ID.4, outros mercados)', 'https://en.wikipedia.org/wiki/Volkswagen_ID.4', 'sem data'],
+        LEVANTAMENTO
       ],
       alertas: ['Os pesos publicados repetem números de outras linhas da ficha e não fecham na conta. Confirme com a VW.'],
       comum: `
@@ -1309,7 +1587,7 @@ capacidadeUtil=79 @1
 quimica=Íons de lítio @1
 autonomiaInmetro=389 @1
 dcMax=185 @1
-tempoDc=25 min (10% a 80%) @1
+tempoDc=25 min (10% a 80%) na fonte original. O levantamento informa cerca de 28 min na mesma faixa. @1,10
 acMax=11 @1
 conector=Tipo 2 e CCS @1
 suspensaoDianteira=McPherson com barra antirrolagem @1
@@ -1353,7 +1631,45 @@ portaMalasRebatido=?1575 @9
 niveisRegen=Modos D e B em outros mercados; quantidade não informada @9
 ota=confirmar: citado em outros mercados @9
 tampaEletrica=serie: Easy Open, sensor sob o para-choque @6,7
-macanetas=serie: embutidas e iluminadas @6,7,8`,
+macanetas=serie: embutidas e iluminadas @6,7,8
+concessionarias=— | Cerca de 465 a 500 concessionárias da marca. A estrutura habilitada para a linha ID. concentra-se nas principais cidades. @10
+anguloEntrada=?16 | Valor aproximado de referência europeia do ID.4 Pro. @10
+anguloSaida=?19 | Valor aproximado de referência europeia do ID.4 Pro. @10
+portaMalasDianteiro=0 @10
+estepe=Kit de reparo de pneus @10
+tensao=— | Arquitetura de classe 400 V, com referência aproximada de 350 a 360 V nominais na plataforma MEB. @10
+consumoInmetro=— | Estimativa de 20,3 kWh/100 km pela divisão de cerca de 79 kWh úteis por 389 km de autonomia Inmetro. @10
+notaPbev=A @10
+autonomiaWltp=550 | Até 550 km @10
+regenMax=?100 | Até cerca de 100 kW, referência da plataforma MEB. Valor brasileiro não detalhado. @10
+umPedal=ausente: modo B intensifica a regeneração sem imobilizar o carro @10
+tempoAc=Cerca de 8 h (0% a 100%, 11 kW) @10
+carregadorPortatil=confirmar: inclusão conforme pacote de entrega da concessionária @10
+wallbox=ausente: sem inclusão de série, sujeito a campanha ou venda como acessório @10
+v2l=ausente @10
+amortecimentoAdaptativo=ausente: sem amortecedores eletrônicos DCC de série no Brasil @10
+partidaRampa=serie @10
+controleDescida=ausente @10
+autoHold=serie @10
+crashTest=5 estrelas Euro NCAP (outro mercado). Adultos 93%, crianças 89%, usuários vulneráveis 76% e assistências 85%. Sem avaliação no Latin NCAP. @10
+isofix=serie: bancos traseiros e do passageiro dianteiro, com Top Tether @10
+estabilidade=serie: ESC e ASR/TCS @10
+tpms=serie: controle de perda de pressão @10
+alertaColisao=serie: Front Assist com AEB, monitoramento de pedestres e ciclistas @10
+leitorPlacas=confirmar: ativação não confirmada na ficha brasileira @10
+sensoresEstacionamento=serie: dianteiros e traseiros, integrados ao assistente de estacionamento @10
+headUp=ausente @10
+app=ausente: comandos remotos por aplicativo da VW sem serviço ativo no Brasil @10
+wifi=ausente: conexão à internet via smartphone @10
+som=7 alto-falantes @10
+saidasTraseiras=serie: Climatronic de 3 zonas @10
+filtroAr=Air Care Climatronic, filtro de partículas finas e alérgenos @10
+lombar=serie: elétrico nos bancos dianteiros ergoActive @10
+bancosVentilados=ausente @10
+encostoReclinavel=ausente: encosto fixo, bipartido e rebatível @10
+vidrosAcusticos=serie: para-brisa acústico. Laterais dianteiros laminados citados no pacote europeu. @10
+volanteAquecido=confirmar: item não listado na ficha brasileira @10
+retrovisoresRebatimento=serie: elétricos e aquecidos @10`,
       versoes: [{ id: 'pro', nome: 'Pro', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AU + '2026/9/1280_960/volkswagen-id4-2027-1_91860_1280_960.jpg'], ['Dianteira 3/4 (estúdio)', AE + '2026/09/AE-VW-ID-4-19.jpg'],

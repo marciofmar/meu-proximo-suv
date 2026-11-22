@@ -43,12 +43,13 @@
       const k = linha.slice(0, i).trim();
       const m = linha.slice(i + 1).match(/^(.*) @([\d,]+)\s*$/);
       if (!m) return;
-      let v = m[1].trim(), conf = false;
+      let v = m[1].trim(), conf = false, detalhe = '';
       if (ITEM[k] && ITEM[k][2] === 'n') {
+        [v, detalhe = ''] = v.split(' | ');
         if (v[0] === '?') { conf = true; v = v.slice(1); }
-        v = Number(v);
+        v = v === '—' ? null : Number(v);
       }
-      saida[k] = { v, s: m[2].split(',').map(Number), conf };
+      saida[k] = { v, s: m[2].split(',').map(Number), conf, detalhe };
     });
     return saida;
   }
@@ -64,6 +65,7 @@
   });
   const carro = id => CARROS.find(c => c.id === id);
   const num = (c, k) => (c.d[k] && typeof c.d[k].v === 'number' ? c.d[k].v : null);
+  const temDado = (c, [k]) => k === 'fontes' || c.d[k]?.v != null;
 
   const padrao = () => ({ ...Object.fromEntries(FILTROS.map(f => [f.k, f.tipo === 'max' ? f.max : f.min])), tracao: '', eq: [], busca: '', ordem: 'preco', sel: [] });
   let estado = padrao();
@@ -105,7 +107,11 @@
     if (!cel || !cel.s || !cel.s.length) return '';
     return cel.s.map(n => {
       const f = c.m.fontes[n - 1];
-      return f ? `<a class="ev-src" href="${esc(f[1])}" target="_blank" rel="noopener noreferrer" title="${esc(f[0])} (${esc(f[2])})" aria-label="Fonte: ${esc(f[0])}">[${n}]</a>` : '';
+      if (!f) return '';
+      const titulo = esc(`${f[0]} (${f[2]})`);
+      return f[1]
+        ? `<a class="ev-src" href="${esc(f[1])}" target="_blank" rel="noopener noreferrer" title="${titulo}" aria-label="Fonte: ${esc(f[0])}">[${n}]</a>`
+        : `<span class="ev-src" title="${titulo}" aria-label="Fonte: ${esc(f[0])}">[${n}]</span>`;
     }).join('');
   }
 
@@ -113,20 +119,21 @@
     if (k === 'fontes') return c.id;
     const cel = c.d[k];
     if (!cel) return '';
-    return `${cel.v}${cel.conf ? '?' : ''}`;
+    return `${cel.v ?? ''}${cel.conf ? '?' : ''}${cel.detalhe ? ' | ' + cel.detalhe : ''}`;
   }
 
   function valor(c, k) {
     const it = ITEM[k];
     if (k === 'fontes') {
-      return c.m.fontes.map((f, i) => `<a href="${esc(f[1])}" target="_blank" rel="noopener noreferrer" title="${esc(f[0])}">[${i + 1}]</a>`).join(' ');
+      return linkFontes(c, { s: c.m.fontes.map((_, i) => i + 1) });
     }
     const cel = c.d[k];
     if (!cel) return '<span class="ev-na">Não informado</span>';
     const src = linkFontes(c, cel);
     if (it[2] === 'n') {
-      const t = it[3] === 'R$' ? reais(cel.v) : `${fmtN(cel.v)}${it[3] === '°' ? '°' : it[3] ? ' ' + it[3] : ''}`;
-      return `${esc(t)}${cel.conf ? ' <span class="ev-conf">a confirmar</span>' : ''}${src}`;
+      const t = cel.v === null ? '<span class="ev-na">Não informado</span>'
+        : esc(it[3] === 'R$' ? reais(cel.v) : `${fmtN(cel.v)}${it[3] === '°' ? '°' : it[3] ? ' ' + it[3] : ''}`);
+      return `${t}${cel.conf ? ' <span class="ev-conf">a confirmar</span>' : ''}${cel.detalhe ? `<br>${esc(cel.detalhe)}` : ''}${src}`;
     }
     if (it[2] === 'e') {
       const [st, ...resto] = String(cel.v).split(':');
@@ -282,7 +289,7 @@
     fichaAtual = { id, foto };
     const sel = estado.sel.includes(id);
     const f = c.m.fotos[foto];
-    const preenchidos = ITENS.filter(i => i[0] === 'fontes' || c.d[i[0]]).length;
+    const preenchidos = ITENS.filter(i => temDado(c, i)).length;
     $('evDialogoTitulo').textContent = `${c.nome} · ${c.ver.nome}`;
     $('evDialogoSub').textContent = `${reais(num(c, 'preco'))} · ${preenchidos} de ${ITENS.length} quesitos com dado`;
     const corpo = $('evDialogoCorpo');
@@ -295,10 +302,10 @@
       <div style="display:flex;gap:7px;margin-bottom:12px"><button class="btn sm ${sel ? 'active' : ''}" data-ev="alternarFicha" data-id="${esc(id)}">${sel ? '✓ Na comparação' : '＋ Adicionar à comparação'}</button></div>
       ${c.m.alertas.length ? `<ul class="ev-alertas">${c.m.alertas.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
       ${GRUPOS.map((g, n) => {
-        const com = g.itens.filter(i => i[0] === 'fontes' || c.d[i[0]]).length;
+        const com = g.itens.filter(i => temDado(c, i)).length;
         return `<details class="ev-grupo" ${n < 2 ? 'open' : ''}><summary>${esc(g.nome)} <small>(${com} de ${g.itens.length})</small></summary>${g.itens.map(i => `<div class="ev-kv"><div>${esc(i[1])}</div><div>${valor(c, i[0])}</div></div>`).join('')}</details>`;
       }).join('')}
-      <details class="ev-grupo"><summary>Fontes consultadas</summary><ol class="ev-fontes">${c.m.fontes.map(x => `<li><a href="${esc(x[1])}" target="_blank" rel="noopener noreferrer">${esc(x[0])}</a> · ${esc(x[2])}</li>`).join('')}</ol></details>`;
+      <details class="ev-grupo"><summary>Fontes consultadas</summary><ol class="ev-fontes">${c.m.fontes.map(([nome, url, data]) => `<li>${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(nome)}</a>` : esc(nome)} · ${esc(data)}</li>`).join('')}</ol></details>`;
     abrirDialogo();
     corpo.scrollTop = 0;
   }
