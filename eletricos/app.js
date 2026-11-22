@@ -175,12 +175,52 @@
   const metrica = (t, r) => `<div><strong>${esc(t)}</strong><span>${esc(r)}</span></div>`;
   const nOuTraco = (c, k, un) => { const v = num(c, k); return v === null ? '—' : `${fmtN(v)}${un ? ' ' + un : ''}`; };
 
+  // ---------- Carrossel de fotos dos cartões ----------
+  const fotoCard = {};
+  let ultimoDeslize = 0;
+  const textoFoto = (c, i) => `${c.m.fotos[i][0]} · ${i + 1}/${c.m.fotos.length}`;
+
+  function carrossel(c) {
+    const i = fotoCard[c.id] || 0;
+    const f = c.m.fotos[i];
+    return `<div class="ev-carrossel" data-carro="${esc(c.id)}" role="group" aria-roledescription="carrossel" aria-label="Fotos de ${esc(c.nome)} ${esc(c.ver.nome)}">
+      <button class="ev-foto" data-ev="galeria" data-id="${esc(c.id)}" data-foto="${i}" aria-label="Ampliar foto: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`)}</button>
+      <button class="ev-carseta esq" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="-1" aria-label="Foto anterior de ${esc(c.curto)}">‹</button>
+      <button class="ev-carseta dir" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="1" aria-label="Próxima foto de ${esc(c.curto)}">›</button>
+      <span class="ev-carinfo" aria-live="polite">${esc(textoFoto(c, i))}</span>
+    </div>`;
+  }
+
+  function preCarregar(url) {
+    const im = new Image();
+    im.referrerPolicy = 'no-referrer';
+    im.src = url;
+    return im;
+  }
+
+  function moverCard(id, passo) {
+    const c = carro(id);
+    const caixa = document.querySelector(`.ev-carrossel[data-carro="${id}"]`);
+    if (!c || !caixa) return;
+    const qtd = c.m.fotos.length;
+    const i = ((fotoCard[id] || 0) + passo + qtd) % qtd;
+    const f = c.m.fotos[i];
+    fotoCard[id] = i;
+    caixa.querySelector('.ev-carinfo').textContent = textoFoto(c, i);
+    const botao = caixa.querySelector('.ev-foto');
+    botao.dataset.foto = i;
+    botao.setAttribute('aria-label', `Ampliar foto: ${f[0]}`);
+    // Troca só depois de carregar, para a foto anterior não sumir enquanto a nova chega.
+    const nova = preCarregar(f[1]);
+    nova.onload = nova.onerror = () => { if (fotoCard[id] === i) botao.innerHTML = imagem(f[1], `${c.nome}: ${f[0]}`, false); };
+    preCarregar(c.m.fotos[(i + passo + qtd) % qtd][1]);
+  }
+
   function cartao(c) {
     const sel = estado.sel.includes(c.id);
-    const f = c.m.fotos[0];
     const cond = c.m.alertas[0];
     return `<article class="ev-card ${sel ? 'sel' : ''}">
-      <button class="ev-foto" data-ev="galeria" data-id="${esc(c.id)}" data-foto="0" aria-label="Ver ${c.m.fotos.length} fotos de ${esc(c.nome)}">${imagem(f[1], `${c.nome}: ${f[0]}`)}<span class="ev-qtd">▣ ${c.m.fotos.length} fotos</span></button>
+      ${carrossel(c)}
       <div class="ev-corpo">
         <div><div class="ev-marca">${esc(c.m.marca)}</div><h3>${esc(c.m.modelo)} · ${esc(c.ver.nome)}</h3></div>
         <div class="ev-preco">${reais(num(c, 'preco'))}</div>
@@ -379,7 +419,10 @@
     const { ev, id } = alvo.dataset;
     switch (ev) {
       case 'ficha': abrirFicha(id); break;
-      case 'galeria': abrirFicha(id, +alvo.dataset.foto || 0); break;
+      case 'galeria':
+        if (Date.now() - ultimoDeslize > 400) abrirFicha(id, +alvo.dataset.foto || 0);
+        break;
+      case 'cardpasso': moverCard(id, +alvo.dataset.p); break;
       case 'alternar': alternar(id); break;
       case 'alternarFicha': alternar(id); abrirFicha(id, fichaAtual ? fichaAtual.foto : 0); break;
       case 'trocafoto': trocaFoto(+alvo.dataset.foto); break;
@@ -430,6 +473,27 @@
     } else if (t.id === 'evOrdem') { estado.ordem = t.value; desenhar(); }
     else if (t.dataset.evc === 'dif') { cmp.soDif = t.checked; abrirComparacao(); }
     else if (t.dataset.evc === 'add' && t.value) { estado.sel = [...estado.sel, t.value]; desenhar(); abrirComparacao(); }
+  });
+
+  let toque = null;
+  $('evCards').addEventListener('touchstart', e => {
+    const caixa = e.target.closest('.ev-carrossel');
+    toque = caixa && e.touches.length === 1 ? { id: caixa.dataset.carro, x: e.touches[0].clientX, y: e.touches[0].clientY } : null;
+  }, { passive: true });
+  $('evCards').addEventListener('touchend', e => {
+    if (!toque) return;
+    const dx = e.changedTouches[0].clientX - toque.x, dy = e.changedTouches[0].clientY - toque.y;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      ultimoDeslize = Date.now();
+      moverCard(toque.id, dx < 0 ? 1 : -1);
+    }
+    toque = null;
+  }, { passive: true });
+  $('evCards').addEventListener('keydown', e => {
+    const caixa = e.target.closest('.ev-carrossel');
+    if (!caixa || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight')) return;
+    e.preventDefault();
+    moverCard(caixa.dataset.carro, e.key === 'ArrowRight' ? 1 : -1);
   });
 
   document.addEventListener('keydown', e => {

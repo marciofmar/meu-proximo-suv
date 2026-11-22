@@ -3,7 +3,7 @@
 //
 // Formato das fichas: uma linha por quesito, "chave=valor @fontes".
 //   - "comum" vale para todas as versões; cada versão só traz o que muda.
-//   - número precedido de "?" é dado a confirmar: aparece marcado e não concorre ao destaque de melhor valor.
+//   - número precedido de "?" é dado a confirmar ou de outro mercado (ver a fonte): aparece marcado e não concorre ao destaque de melhor valor.
 //   - equipamento: serie | opcional | ausente | confirmar, com detalhe depois de ":".
 //   - quesito sem linha = não informado nas fontes consultadas. Nada foi estimado.
 (function () {
@@ -20,7 +20,11 @@
         ['Comprecar (preços do site oficial em 11/11/2026)', 'https://www.comprecar.com.br/blog/?p=2070', '12/11/2026'],
         ['Encontracarros', 'https://www.encontracarros.com.br/omoda-e5-2027-chega-ao-brasil/', '04/11/2026'],
         ['AutoPapo', 'https://autopapo.com.br/noticia/omoda-e5-2027-lancamento/', '04/11/2026'],
-        ['GameOverDrive', 'https://gameoverdrive.com.br/omoda-e5-2027-preco-autonomia-versoes/', '05/11/2026']
+        ['GameOverDrive', 'https://gameoverdrive.com.br/omoda-e5-2027-preco-autonomia-versoes/', '05/11/2026'],
+        ['Autoentusiastas', 'https://autoentusiastas.com.br/2026/11/omoda-e5-2027-eletrico-precos-versoes-alcance/', '04/11/2026'],
+        ['Primo Auto', 'https://primoauto.com.br/novo-omoda-e5-2027-precos-elite-prestige-comparativo', '04/11/2026'],
+        ['Autoranking', 'https://autoranking.com.br/omoda-e5-precos-versoes-autonomia-equipamentos/', '05/11/2026'],
+        ['Mobiauto', 'https://www.mobiauto.com.br/revista/omoda-e5-2027-fica-ate-r-50-mil-mais-barato-e-melhora-velocidade-de-recarga/11948', '04/11/2026']
       ],
       alertas: ['O lote de lançamento (R$ 149.990 e R$ 179.990) já foi encerrado.', 'O consumo Inmetro ainda não foi divulgado.'],
       comum: `
@@ -66,7 +70,13 @@ tampaEletrica=serie: com sensor de presença @2
 iluminacaoAmbiente=serie: configurável @2
 farois=LED @3
 lanternas=LED @1
-cores=4 opções @3`,
+cores=4 opções @3
+vaoLivre=171 @5,6,7
+portaMalasRebatido=1079 @5,6,7
+lugares=5 @5
+cd=0.281 @5
+direcao=Pinhão e cremalheira, assistência elétrica na coluna @5
+isofix=serie @8`,
       versoes: [
         { id: 'elite', nome: 'Elite', dados: `
 preco=159990 @1
@@ -97,7 +107,14 @@ frenagemAutonoma=ausente @2
 alertaColisao=ausente @2
 pontoCego=ausente @2
 trafegoCruzado=ausente @2
-farolAltoAuto=ausente @2` },
+farolAltoAuto=ausente @2
+cargaUtil=425 @5
+pesoBruto=2085 @5
+multimidia=Tela tátil de 12,3 pol @5,6
+alertaFadiga=ausente @5,6
+ajustePassageiro=ausente: manual @6
+lombar=ausente @5,6
+retrovisoresRebatimento=ausente: elétricos e aquecidos, sem rebatimento @5,6` },
         { id: 'prestige', nome: 'Prestige', dados: `
 preco=184990 @1
 capacidadeNominal=60.9 @1
@@ -130,7 +147,11 @@ frenagemAutonoma=serie @1
 alertaColisao=serie: frontal @1
 pontoCego=serie @1
 trafegoCruzado=serie: traseiro @1
-farolAltoAuto=serie @1` }
+farolAltoAuto=serie @1
+cargaUtil=518 @5
+pesoBruto=2260 @5
+multimidia=Tela UHD de 15,6 pol @5,6
+alertaFadiga=serie: monitoramento do motorista (DMS) @5,6` }
       ],
       fotos: [
         ['Frente', EC + '2026/11/omoda-e5_2027_07.jpg'], ['Dianteira 3/4', EC + '2026/11/omoda-e5_2027.jpg'],
@@ -148,7 +169,10 @@ farolAltoAuto=serie @1` }
         ['AutoPapo', 'https://autopapo.com.br/noticia/gwm-ora-5-preco-equipamentos-autonomia/', '24/06/2026'],
         ['AUTOO (lançamento)', 'https://www.autoo.com.br/gwm-lanca-suv-eletrico-ora5-com-preco-de-t-cross-tracker-e-outros-veja-detalhes/', '24/06/2026'],
         ['A Crítica', 'https://acritica.net/automoveis/gwm-lanca-ora-5-suv-eletrico-r-159-mil-autonomia-349-km/', '24/06/2026'],
-        ['AUTOO (preço atual)', 'https://www.autoo.com.br/gwm-ora-5-j-custa-r-165990-mas-est-sem-estoque-na-loja-oficial/', '21/11/2026']
+        ['AUTOO (preço atual)', 'https://www.autoo.com.br/gwm-ora-5-j-custa-r-165990-mas-est-sem-estoque-na-loja-oficial/', '21/11/2026'],
+        ['GWM Newhouse (concessionária oficial)', 'https://www.gwmnewhouse.com.br/modelo/ora-5/', 'sem data'],
+        ['Car.Blog.BR', 'https://www.car.blog.br/2026/06/gwm-ora-5-suv-eletrico-preco-fotos.html', '24/06/2026'],
+        ['AutoHub', 'https://www.autohubcars.com.br/lancamentos-gwm-ora-5', '20/09/2026']
       ],
       alertas: ['Em 21/11/2026 aparecia sem estoque na loja oficial. Confirme a disponibilidade.'],
       comum: `
@@ -234,7 +258,11 @@ iluminacaoAmbiente=serie: configurável @1
 retrovisoresRebatimento=serie: automático ao travar @1
 farois=Full LED @2
 lanternas=Integradas ao vidro traseiro @4
-cores=Cinza Zenith, Preto Khalifa, Branco Cristal, Electric Blue @2`,
+cores=Cinza Zenith, Preto Khalifa, Branco Cristal, Electric Blue @2
+potenciaMotores=1 motor dianteiro, 204 cv @6,7
+conector=CCS Tipo 2 @6,7
+wifi=serie: Wi-Fi compartilhado @6
+niveisRegen=Ajustável, quantidade não informada @7,8`,
       versoes: [{ id: 'unica', nome: 'Versão única', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2026/06/ORA-5.jpg'], ['Dianteira 3/4 (outra cor)', EC + '2026/06/ORA-3_4-DIANTEIRA.jpeg'],
@@ -254,7 +282,11 @@ cores=Cinza Zenith, Preto Khalifa, Branco Cristal, Electric Blue @2`,
         ['CNN Brasil', 'https://www.cnnbrasil.com.br/auto/leapmotor-b10-sera-nacional-e-suv-eletrico-parte-de-r-182-990/', '07/04/2026'],
         ['Webmotors (ficha, via resultado de busca)', 'https://www.webmotors.com.br/leapmotor/b10/2026', '21/11/2026'],
         ['AUTOO (Black Friday)', 'https://www.autoo.com.br/black-friday-da-leapmotor-mantm-preos-dos-suvs-mas-oferece-brindes-e-financiamento/', '11/2026'],
-        ['Autoentusiastas (uso)', 'https://autoentusiastas.com.br/2026/07/leapmotor-b10-no-uso/', '07/2026']
+        ['Autoentusiastas (uso)', 'https://autoentusiastas.com.br/2026/07/leapmotor-b10-no-uso/', '07/2026'],
+        ['Leapmotor Saga (concessionária)', 'https://www.leapmotorsaga.com.br/blog/leapmotor-b10-ficha-tecnica', '28/03/2026'],
+        ['Auto+ TV (avaliação)', 'https://www.automaistv.com.br/avaliacao/leapmotor-b10-e-seu-tio-preferido-mas-que-faz-a-piada-do-pave-avaliacao/', '08/06/2026'],
+        ['ABC do ABC (avaliação)', 'https://abcdoabc.com.br/leapmotor-b10-2', '28/07/2026'],
+        ['Encontracarros (C10 e B10)', 'https://www.encontracarros.com.br/leapmotor-c10-e-b10/', '12/08/2026']
       ],
       alertas: ['As fontes divergem sobre o ajuste elétrico do banco do motorista. Confira no carro.'],
       comum: `
@@ -309,12 +341,42 @@ ota=serie @1
 inducao=serie @2
 chaveDigital=serie: smartphone e NFC @2
 revestimentoBancos=Tecido com certificação OEKO-TEX @1
-ajusteMotorista=confirmar: AutoPapo diz que não tem; Autoentusiastas lista ajuste elétrico @1,6
+ajusteMotorista=confirmar: AutoPapo, ABC do ABC e Encontracarros indicam manual; Autoentusiastas lista elétrico @1,9,10,6
 teto=serie: panorâmico de 1,8 m², cortina elétrica @1
 farois=Full LED automáticos @1
 lanternas=LED integradas @1
 macanetas=serie @2
-cores=Roxo Aurora, Cinza Tundra, Branco Lunar, Preto Eclipse @1`,
+cores=Roxo Aurora, Cinza Tundra, Branco Lunar, Preto Eclipse @1
+garantiaBateria=8 anos ou 160.000 km @7
+larguraRetrovisores=2110 @6,9
+vaoLivre=185 @6,8,9
+anguloEntrada=22 @6,9
+anguloSaida=28 @6,9
+diametroGiro=10.5 @6
+lugares=5 @10
+cargaUtil=435 @6
+massa=1780 @6,8,9
+pneus=225/50 R18 na frente, 235/50 R18 atrás @6,9,10
+freios=Disco ventilado na frente, disco atrás @6,9
+direcao=Elétrica, pinhão e cremalheira @6,9
+umPedal=serie @9
+tempoAc=3,9 h (30% a 80%) @6,9,10
+conector=Type 2 e CCS2 @6,9
+carregadorPortatil=serie: T2M2 @10
+partidaRampa=serie @10
+estabilidade=serie @8,10
+tpms=serie @8
+farolAltoAuto=serie @8,10
+camera360=serie @7,6
+sensoresEstacionamento=serie: traseiros @10
+vozPortugues=serie: comando de voz; idioma não informado @9
+usb=4 portas (2 tipo A, 2 tipo C) @9
+wifi=serie: internet 4G a bordo @8,10
+navegacao=serie @6,9
+arCondicionado=Automático digital, 1 zona @8,6
+saidasTraseiras=serie @10
+bancosAquecidos=ausente @10
+bancosVentilados=ausente @10`,
       versoes: [{ id: 'unica', nome: 'Versão única', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AE + '2026/07/AE-Leapmotor-B10-7699.jpg'], ['Frente', AE + '2026/07/AE-Leapmotor-B10-7701.jpg'],
@@ -333,7 +395,10 @@ cores=Roxo Aurora, Cinza Tundra, Branco Lunar, Preto Eclipse @1`,
         ['Recarregados', 'https://recarregados.com/blog/geely-ex5-review-brasil', '05/10/2026'],
         ['Canal VE (Pro)', 'https://canalve.com.br/ficha-tecnica/geely/tudo-sobre-ex5-pro/', 'sem data'],
         ['Canal VE (Max)', 'https://canalve.com.br/ficha-tecnica/geely/tudo-sobre-ex5-max/', 'sem data'],
-        ['Vrum', 'https://www.vrum.com.br/avaliacoes/2025/07/7213430-geely-ex5-chega-ao-brasil-com-bom-pacote-de-equipamentos-e-preco-competitivo.html', '31/07/2025']
+        ['Vrum', 'https://www.vrum.com.br/avaliacoes/2025/07/7213430-geely-ex5-chega-ao-brasil-com-bom-pacote-de-equipamentos-e-preco-competitivo.html', '31/07/2025'],
+        ['Autoentusiastas (primeiras impressões)', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/', '30/07/2025'],
+        ['Canaltech (teste)', 'https://canaltech.com.br/carros/teste-geely-ex5-e-suv-com-jeitao-de-chines-e-dna-de-volvo/', '30/07/2025'],
+        ['Verificar Auto', 'https://verificarauto.com.br/carros-eletricos/geely-ex5/', 'sem data']
       ],
       alertas: ['O bônus de R$ 10 mil na versão Pro valia até 31/10/2026, sem renovação encontrada.', 'A nota 5 estrelas é do Euro NCAP, para o carro vendido na Europa.'],
       comum: `
@@ -404,7 +469,9 @@ retrovisoresRebatimento=serie: elétricos e aquecidos @4
 farois=Full LED automáticos @1
 lanternas=LED @1
 macanetas=serie: retráteis automáticas @1
-cores=Preto Carbon, Branco Storm, Cinza Ash, Prata Moon @1`,
+cores=Preto Carbon, Branco Storm, Cinza Ash, Prata Moon @1
+conector=CCS2 @9
+wallbox=opcional: bônus de pré-venda ou financiamento @7,3`,
       versoes: [
         { id: 'pro', nome: 'Pro', dados: `
 preco=207800 @2
@@ -456,7 +523,8 @@ headUp=serie: 13,8 pol @1
 som=Flyme Premium, 16 alto-falantes @1
 teto=serie: panorâmico, cortina elétrica @1
 tampaEletrica=serie @1
-iluminacaoAmbiente=serie: 256 cores @1` }
+iluminacaoAmbiente=serie: 256 cores @1
+bancosAquecidos=serie: dianteiros @7,8` }
       ],
       fotos: [
         ['Dianteira 3/4', AE + '2025/07/CAPA-1.jpg'], ['Dianteira 3/4 (branco)', EC + '2025/06/geely-ex5-2026.jpg'],
@@ -475,7 +543,11 @@ iluminacaoAmbiente=serie: 256 cores @1` }
         ['Canal VE (ficha)', 'https://canalve.com.br/ficha-tecnica/leapmotor/tudo-sobre-c10/', 'sem data'],
         ['Canal VE (garantia)', 'https://canalve.com.br/leapmotor-amplia-garantia-carros-seis-anos/', '22/09/2026'],
         ['Encontracarros', 'https://www.encontracarros.com.br/leapmotor-c10-e-lancado-no-brasil-por-r-189-990/', '04/11/2025'],
-        ['Autos Segredos', 'https://www.autossegredos.com.br/lancamentos/leapmotor-c10-2026-chega-com-precos-entre-189-990-bev-e-r-199-990-reev/', '04/11/2025']
+        ['Autos Segredos', 'https://www.autossegredos.com.br/lancamentos/leapmotor-c10-2026-chega-com-precos-entre-189-990-bev-e-r-199-990-reev/', '04/11/2025'],
+        ['Encontracarros (C10 e B10)', 'https://www.encontracarros.com.br/leapmotor-c10-e-b10/', '12/08/2026'],
+        ['Carwow Espanha (outro mercado)', 'https://www.carwow.es/leapmotor/c10/caracteristicas-tecnicas', 'sem data'],
+        ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/leapmotor/c10/2024/style/features-and-specs', 'sem data'],
+        ['Auto-Data (outro mercado)', 'https://www.auto-data.net/es/leapmotor-c10-69.9-kwh-218hp-bev-55063', 'sem data']
       ],
       alertas: ['As fotos de bancos e porta-malas são da versão híbrida REEV.'],
       comum: `
@@ -574,7 +646,18 @@ retrovisoresRebatimento=serie @3
 farois=Full LED @1
 lanternas=Interligadas, com barra luminosa @6
 macanetas=serie @6
-cores=Cinza Noturno, Cinza Tundra, Preto Eclipse, Branco Alvorada, Verde Boreal @1`,
+cores=Cinza Noturno, Cinza Tundra, Preto Eclipse, Branco Alvorada, Verde Boreal @1
+reboque=?1500 @8
+pesoBruto=?2460 @8,9,10
+estepe=Kit de reparo na Espanha; Brasil não informado @8
+capacidadeUtil=?69.9 @9
+niveisRegen=Ajustável, quantidade não informada @8,9
+crashTest=5 estrelas Euro NCAP 2024 (outro mercado) @8,9
+carregadorPortatil=serie: T2M2 @7
+carplayAndroid=confirmar: listado na Espanha; ficha brasileira não cita @8
+espacoPernas=?951 @9
+volanteAquecido=confirmar: aquecido na versão Design da Espanha @8
+barrasTeto=confirmar: longitudinais na versão da Espanha @8`,
       versoes: [{ id: 'bev', nome: 'Elétrico (BEV)', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2025/11/leapmotor-c10_01.jpg'], ['Frente', EC + '2026/08/leapmotor-c10_18.jpg'],
@@ -592,9 +675,16 @@ cores=Cinza Noturno, Cinza Tundra, Preto Eclipse, Branco Alvorada, Verde Boreal 
         ['Encontracarros', 'https://www.encontracarros.com.br/mg-s5-versoes-precos-e-equipamentos/', '30/12/2025'],
         ['Auto+ TV', 'https://www.automaistv.com.br/novidades/mg-s5-chega-com-duas-versoes-com-mais-de-200-cv-abaixo-dos-r-200-mil/', '20/11/2025'],
         ['O Antagonista', 'https://oantagonista.com.br/ladooa/carros/mg-s5-desafia-sedas-caros-com-pacote-completo-e-preco-muito-mais-justo/', '17/12/2025'],
-        ['Eletricos.app (Luxury)', 'https://www.eletricos.app/veiculo/mg-s5-ev-luxury-2026', 'sem data']
+        ['Eletricos.app (Luxury)', 'https://www.eletricos.app/veiculo/mg-s5-ev-luxury-2026', 'sem data'],
+        ['Verificar Auto', 'https://verificarauto.com.br/mg-s5-preco-ficha-tecnica-vale-a-pena/', '26/03/2026'],
+        ['MobiEV', 'https://mobiev.com.br/modelo/mg-s5/', '09/10/2026'],
+        ['CNN Brasil', 'https://www.cnnbrasil.com.br/blogs/jorge-moraes/auto/suv-s5-eletrico-sera-feito-pela-inglesa-mg-no-ceara-ao-lado-do-mg4-urban/', '20/06/2026'],
+        ['Autos Segredos', 'https://www.autossegredos.com.br/marcas/mg/mg-s5-ev-e-o-suv-eletrico-escolhido-para-reestreia-no-brasil/', '12/07/2025'],
+        ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/car-reviews/2026-mg-s5-ev-review', '07/03/2026'],
+        ['Paultan Malásia (outro mercado)', 'https://paultan.org/research/compare/mg-s5/com-2026-vs-lux-2026/', '11/2026'],
+        ['Wikipedia (MGS5 EV)', 'https://en.wikipedia.org/wiki/MGS5_EV', '08/11/2026']
       ],
-      alertas: ['Um anúncio de concessionária mostra a Luxury por R$ 219.800. Vale negociar.', 'O 0 a 100 km/h da Luxury diverge: 6,3 s na maioria das fontes, 8,5 s em uma.'],
+      alertas: ['Um anúncio de concessionária mostra a Luxury por R$ 219.800. Vale negociar.', 'A química da bateria e o pacote ADAS da Comfort divergem entre as fontes. Confirme na concessionária.'],
       comum: `
 anoModelo=2026 @1
 precoCondicao=Preço de tabela sugerido @1
@@ -613,7 +703,7 @@ potenciaTotal=205 @5
 torque=350 @2
 tracao=Traseira @3
 velocidadeMaxima=190 @3
-capacidadeNominal=62 @5
+capacidadeNominal=64 @6,7,2,8
 autonomiaInmetro=351 @1
 autonomiaWltp=480 @4
 dcMax=150 @5
@@ -638,7 +728,28 @@ arCondicionado=Digital @4
 revestimentoBancos=Couro sintético com tecido @2
 volanteAquecido=serie @4
 farois=Full LED @2
-lanternas=LED com barra conectada @2`,
+lanternas=LED com barra conectada @2
+origem=China; montagem em Horizonte (CE) anunciada @8
+vaoLivre=?164 @10
+reboque=?750 @10
+estepe=Kit de reparo na Austrália e na Malásia; Brasil não informado @10,11
+modosConducao=Divergem: Eco, Normal, Sport ou Normal, Sport, Comfort, Neve, Personalizado @6,9
+capacidadeUtil=62.1 @7
+quimica=A confirmar: Verificar Auto diz LFP; Wikipedia diz NMC @6,12
+tensao=?400 @11
+umPedal=serie @8
+tempoAc=Cerca de 9 h (0% a 100%, wallbox de 7,4 kW) @6
+conector=CCS2 em DC; tipo AC não informado @6
+freios=ABS com EBD; tipo de disco não informado @9
+crashTest=5 estrelas Euro NCAP 2025 (outro mercado) @8,10
+multimidia=Tela de 12,8 pol, Android Auto e CarPlay sem fio @6,2
+usb=2 USB-C na frente e 1 atrás na Austrália e na Malásia; Brasil não informado @10,11
+navegacao=serie: nativa @9
+saidasTraseiras=confirmar: presentes na Austrália e na Malásia @10,11
+ajustePassageiro=confirmar: manual na Austrália e na Malásia @10,11
+bancosVentilados=confirmar: citados sem indicar a versão @9
+barrasTeto=confirmar: presentes na Austrália @10
+cores=Branco pérola, metálicas e vermelho MG (lista incompleta) @6`,
       versoes: [
         { id: 'comfort', nome: 'Comfort', dados: `
 preco=218800 @1
@@ -653,10 +764,19 @@ nivelAdas=Sem pacote ADAS @2
 acc=ausente @2
 inducao=ausente @2
 teto=ausente @2
-tampaEletrica=ausente @2` },
+tampaEletrica=ausente @2
+v2l=confirmar: fonte não separa versões @8
+ota=confirmar: fonte não separa versões @6
+centralizacaoFaixa=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+frenagemAutonoma=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+alertaColisao=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+pontoCego=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+trafegoCruzado=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+leitorPlacas=confirmar: Encontracarros e Verificar Auto indicam ausência; Autos Segredos cita @2,6,9
+retrovisoresRebatimento=confirmar: rebatíveis na versão da Malásia @11` },
         { id: 'luxury', nome: 'Luxury', dados: `
 preco=238800 @1
-zeroCem=?6.3 @2
+zeroCem=6.3 @2,6,8
 airbags=7 @2
 massa=1791 @2
 rodas=Aro 18, diamantadas @2
@@ -674,7 +794,12 @@ inducao=serie @2
 teto=serie: panorâmico @4
 tampaEletrica=serie: abertura sem as mãos @4
 v2l=serie @5
-ota=serie @5` }
+ota=serie @5
+leitorPlacas=serie @9
+bancosAquecidos=serie: dianteiros @8,9
+lombar=confirmar: motorista, na versão da Austrália @10
+memoria=confirmar: sem memória na versão da Austrália @10
+retrovisoresRebatimento=confirmar: elétrico na versão da Austrália @10` }
       ],
       fotos: [
         ['Dianteira 3/4', EC + '2025/12/mg-s5-2026_03.jpg'], ['Frente', EC + '2025/12/mg-s5-2026_02.jpg'],
@@ -694,7 +819,9 @@ ota=serie @5` }
         ['Vrum', 'https://www.vrum.com.br/mercado/2026/11/7537146-baic-anuncia-arcfox-t5-como-tesla-model-y-que-brasileiro-podera-comprar.html', '11/11/2026'],
         ['Encontracarros', 'https://www.encontracarros.com.br/baic-arcfox-t5/', '12/11/2026'],
         ['CNN Brasil', 'https://www.cnnbrasil.com.br/auto/baic-arcfox-t5-chega-por-r-219-990-com-252-cv-e-autonomia-de-362-km/', '11/11/2026'],
-        ['Autos Segredos', 'https://www.autossegredos.com.br/marcas/baic/baic-arcfox-t5-preco-brasil-219990/', '11/11/2026']
+        ['Autos Segredos', 'https://www.autossegredos.com.br/marcas/baic/baic-arcfox-t5-preco-brasil-219990/', '11/11/2026'],
+        ['Carros com Camanzi', 'https://carroscomcamanzi.com.br/baic-arcfox-t5-e-mais-um-suv-eletrico-que-estreia-por-r-220-mil/', '13/11/2026'],
+        ['Wikipedia (Arcfox αT5, China)', 'https://en.wikipedia.org/wiki/Arcfox_%CE%B1T5', '09/10/2026']
       ],
       alertas: ['Em pré-venda: o preço vale para as primeiras 50 unidades ou até o fim de 2026.', 'Marca nova no Brasil. Confira rede, peças e assistência na sua região.', 'Parte das fotos é do modelo chinês.'],
       comum: `
@@ -759,7 +886,10 @@ retrovisoresRebatimento=serie: com memória @6
 farois=LED @4
 lanternas=Faixa horizontal interligada @4
 macanetas=serie: externas embutidas @1
-cores=Cinza Mineral, Preto Obsidiana, Branco Lunas @7`,
+cores=Cinza Mineral, Preto Obsidiana, Branco Lunas @7
+cd=?0.243 @10
+crashTest=5 estrelas C-NCAP 2021, versão chinesa (outro mercado) @10
+iluminacaoAmbiente=serie @9`,
       versoes: [{ id: 'max', nome: 'Max', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2026/11/baic-arcfox-t5-2027-04.jpg'], ['Dianteira 3/4 (estúdio)', EC + '2026/11/baic-arcfox-t5-2027-02.jpg'],
@@ -778,7 +908,10 @@ cores=Cinza Mineral, Preto Obsidiana, Branco Lunas @7`,
         ['Encontracarros', 'https://www.encontracarros.com.br/chevrolet-captiva-ev-2026-chega-ao-brasil/', '18/11/2025'],
         ['DGABC (teste)', 'https://www.dgabc.com.br/Noticia/4345913/teste-chevrolet-captiva-ev-nao-surpreende-mas-agrada-bastante', '09/09/2026'],
         ['O Povo (teste)', 'https://www.opovo.com.br/noticias/veiculos/2026/02/10/o-povo-testou-o-chevrolet-captiva-suv-eletrico-com-dna-urbano.html', '10/02/2026'],
-        ['Carro.blog.br (ficha)', 'https://carro.blog.br/ficha-tecnica/chevrolet/chevrolet-captiva-ev/chevrolet-captiva-ev-2026/chevrolet-captiva-ev-2026-autonomia-urbana-e-rodar-silencioso-fazem-o-suv-eletrico-facil-de-conviver', 'sem data']
+        ['Carro.blog.br (ficha)', 'https://carro.blog.br/ficha-tecnica/chevrolet/chevrolet-captiva-ev/chevrolet-captiva-ev-2026/chevrolet-captiva-ev-2026-autonomia-urbana-e-rodar-silencioso-fazem-o-suv-eletrico-facil-de-conviver', 'sem data'],
+        ['Carros na Web (ficha)', 'https://www.carrosnaweb.com.br/fichadetalhe.asp?codigo=41578', 'sem data'],
+        ['Elétricos Brasil', 'https://www.eletricos.app/veiculo/chevrolet-captiva-ev-premier-60-kwh-2026', '05/11/2026'],
+        ['AUTOO', 'https://www.autoo.com.br/captiva-ev-promete-mais-espaco-por-menos-que-rivais-veja-o-que-mudou/', '03/02/2026']
       ],
       alertas: ['As fontes divergem sobre carregador por indução e aquecimento do banco. Confira no carro.'],
       comum: `
@@ -860,7 +993,17 @@ retrovisoresRebatimento=serie: automático @6
 farois=Full LED @2
 lanternas=Full LED @2
 macanetas=ausente: convencionais @2
-cores=Branco Lençóis, Cinza Diamantina, Azul Búzios, Dourado Jeri @4`,
+cores=Branco Lençóis, Cinza Diamantina, Azul Búzios, Dourado Jeri @4
+consumoInmetro=?19.6 @8,9
+cd=0.277 @8
+partidaRampa=serie @8,9,7
+estabilidade=serie @8,9,7
+estacionamentoAuto=serie: semiautomático @8,7
+multimidia=Tela vertical de 15,6 pol com espelhamento @8,10
+wifi=serie: roteador Wi-Fi @8,7
+navegacao=serie: GPS @7
+saidasTraseiras=serie @8,9,7
+barrasTeto=serie: longitudinais @8`,
       versoes: [{ id: 'premier', nome: 'Premier', dados: '' }],
       fotos: [
         ['Dianteira 3/4', EC + '2025/11/chevrolet-captiva-ev-2026_03.jpg'], ['Dianteira 3/4 (outra cor)', AE + '2026/02/AE-Chevrolet-Captiva-EV-2324-e1770679679791.jpg'],
@@ -880,7 +1023,10 @@ cores=Branco Lençóis, Cinza Diamantina, Azul Búzios, Dourado Jeri @4`,
         ['Autoentusiastas', 'https://autoentusiastas.com.br/2026/04/gac-aion-v-equilibrio-tecnico-e-maturidade-no-uso/', '07/04/2026'],
         ['Verificar Auto', 'https://verificarauto.com.br/carros-eletricos/gac-aion-v/', 'sem data'],
         ['Tabela Carros', 'https://tabelacarros.com/post/gac-aion-v-luxo-espaco-e-autonomia-de-480-km-reais', '11/04/2026'],
-        ['iCarros e Webmotors (ficha, via resultado de busca)', 'https://www.webmotors.com.br/gac/aion-v/2026', '21/11/2026']
+        ['iCarros e Webmotors (ficha, via resultado de busca)', 'https://www.webmotors.com.br/gac/aion-v/2026', '21/11/2026'],
+        ['Carros na Web (ficha)', 'https://www.carrosnaweb.com.br/fichadetalhe.asp?codigo=44285', 'sem data'],
+        ['Ficha Completa', 'https://www.fichacompleta.com.br/en/carros/gac/aion-v-elite-2026', 'sem data'],
+        ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/gac/aion-v/2026/luxury/features-and-specs', 'sem data']
       ],
       alertas: ['As fontes divergem sobre conexão sem fio de CarPlay e Android Auto. Teste com seu celular.'],
       comum: `
@@ -973,7 +1119,20 @@ retrovisoresRebatimento=serie: com memória @2
 farois=Full LED @2
 lanternas=LED verticais @1
 macanetas=serie: elétricas retráteis @2
-barrasTeto=serie @2`,
+barrasTeto=serie @2
+anguloEntrada=19 @7,8
+anguloSaida=27 @7,8
+diametroGiro=11.2 @7,8
+portaMalasRebatido=?978 @9
+tensao=?366.5 @9
+consumoInmetro=?19.2 @7
+autonomiaWltp=?510 @9
+crashTest=5 estrelas Euro NCAP 2025 (outro mercado) @7,8
+alertaFadiga=serie @7,8
+leitorPlacas=serie @7,8
+app=serie: comandos e informações do veículo @7,8
+inducao=serie @7,8
+volanteAquecido=confirmar: aquecido na versão da Austrália @9`,
       versoes: [{ id: 'elite', nome: 'Elite', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AE + '2026/04/AE-GAC-Aion-V-4-de-46.jpg'], ['Frente', AE + '2026/04/AE-GAC-Aion-V-5-de-46.jpg'],
@@ -991,7 +1150,11 @@ barrasTeto=serie @2`,
         ['Site BYD Brasil', 'https://www.byd.com/br/car/yuan-plus.html', '2026'],
         ['AutoPapo', 'https://autopapo.com.br/noticia/byd-renova-yuan-plus-com-tracao-integral-e-desempenho-aprimorado/', '08/04/2026'],
         ['AUTOO', 'https://www.autoo.com.br/byd-yuan-plus-2027-veja-preco-pecas-consumo-e-equipamentos-do-suv/', '08/04/2026'],
-        ['Canal VE (ficha)', 'https://canalve.com.br/ficha-tecnica/byd/tudo-sobre-yuan-plus-2027/', 'sem data']
+        ['Canal VE (ficha)', 'https://canalve.com.br/ficha-tecnica/byd/tudo-sobre-yuan-plus-2027/', 'sem data'],
+        ['Recarregados', 'https://recarregados.com/blog/byd-yuan-plus-awd-review-brasil', '03/10/2026'],
+        ['JK Carros', 'https://jkcarros.com.br/byd-yuan-plus-awd-2027-pcd-preco-tco/', '02/09/2026'],
+        ['Auto+ TV', 'https://www.automaistv.com.br/novidades/byd-yuan-plus-ganha-tracao-awd-e-0-a-100-km-h-de-porsche/', '06/04/2026'],
+        ['Wikipedia (Atto 3, outro mercado)', 'https://en.wikipedia.org/wiki/BYD_Atto_3', 'sem data']
       ],
       alertas: ['O aquecimento dos bancos aparece no site da BYD, mas não na ficha técnica de julho.'],
       comum: `
@@ -1080,7 +1243,12 @@ iluminacaoAmbiente=serie: multicores @1
 retrovisoresRebatimento=serie @1
 farois=LED, com ajuste automático de altura @1
 lanternas=LED @1
-cores=Obsidian Black, Time Grey, Skiing White @1`,
+cores=Obsidian Black, Time Grey, Skiing White @1
+portaMalasRebatido=?1360 @9
+tensao=?800 @9
+conector=Type 2 e CCS2 no Atto 3 europeu; Brasil não informado @9
+crashTest=5 estrelas Euro NCAP 2022, Atto 3 europeu (outro mercado) @9
+navegacao=serie: Google, com Maps e Waze @6,7,8`,
       versoes: [{ id: 'awd', nome: 'AWD', dados: '' }],
       fotos: [
         ['Frente', AU + '2026/4/1280_960/byd991_08042026_89459_1280_960.jpg'], ['Dianteira 3/4', AU + '2026/4/1280_960/byd-1_06042026_89430_1280_960.jpg'],
@@ -1098,7 +1266,11 @@ cores=Obsidian Black, Time Grey, Skiing White @1`,
         ['AutoPapo', 'https://autopapo.com.br/noticia/volkswagen-id-4-chega-por-r-299-990-e-e-a-primeira-ameaca-real-aos-carros-chineses/', '06/09/2026'],
         ['Revista Carro', 'https://revistacarro.com.br/vw-id-4-2027-chega-ao-brasil-com-286-cv-por-r-299-mil/', '09/2026'],
         ['Canal VE', 'https://canalve.com.br/volkswagen-primeiro-100-eletrico-marca-brasil/', '08/09/2026'],
-        ['Jornal do Comércio', 'https://www.jornaldocomercio.com/colunas/automotor/2026/09/1264454-volkswagen-id-4-volta-ao-brasil-agora-como-produto-de-venda-em-loja-foto-principal.html', '24/09/2026']
+        ['Jornal do Comércio', 'https://www.jornaldocomercio.com/colunas/automotor/2026/09/1264454-volkswagen-id-4-volta-ao-brasil-agora-como-produto-de-venda-em-loja-foto-principal.html', '24/09/2026'],
+        ['Tribuna PR', 'https://www.tribunapr.com.br/noticias/automoveis/novo-volkswagen-id4-pro-2027-preco-especificacoes-brasil/', '08/09/2026'],
+        ['Mundo do Automóvel para PCD', 'https://mundodoautomovelparapcd.com.br/volkswagen-id4-pro-2027-lancamento/', '06/09/2026'],
+        ['Guru dos Carros', 'https://gurudoscarros.com.br/2026/09/05/volkswagen-id4-chega-outubro-brasil-299990/', '05/09/2026'],
+        ['Wikipedia (ID.4, outros mercados)', 'https://en.wikipedia.org/wiki/Volkswagen_ID.4', 'sem data']
       ],
       alertas: ['Os pesos publicados repetem números de outras linhas da ficha e não fecham na conta. Confirme com a VW.'],
       comum: `
@@ -1176,7 +1348,12 @@ iluminacaoAmbiente=serie: 30 cores @1
 farois=LED Matrix IQ.Light @3
 lanternas=IQ.Light com elementos 3D @5
 barrasTeto=serie: longitudinais, 75 kg @1
-cores=Costa Azul com teto Preto Piano, Preto Granadilho @3`,
+cores=Costa Azul com teto Preto Piano, Preto Granadilho @3
+portaMalasRebatido=?1575 @9
+niveisRegen=Modos D e B em outros mercados; quantidade não informada @9
+ota=confirmar: citado em outros mercados @9
+tampaEletrica=serie: Easy Open, sensor sob o para-choque @6,7
+macanetas=serie: embutidas e iluminadas @6,7,8`,
       versoes: [{ id: 'pro', nome: 'Pro', dados: '' }],
       fotos: [
         ['Dianteira 3/4', AU + '2026/9/1280_960/volkswagen-id4-2027-1_91860_1280_960.jpg'], ['Dianteira 3/4 (estúdio)', AE + '2026/09/AE-VW-ID-4-19.jpg'],

@@ -52,9 +52,20 @@ body:not([data-aba="eletricos"]) .evOnly { display: none !important; }
   position: relative; display: block; width: 100%; padding: 0; border: 0; aspect-ratio: 4 / 3;
   background: #e6edf1; overflow: hidden; cursor: zoom-in;
 }
-.ev-foto img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.ev-foto .ev-qtd {
-  position: absolute; right: 7px; bottom: 7px; padding: 2px 8px; border-radius: 999px;
+.ev-foto img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.ev-carrossel { position: relative; touch-action: pan-y; }
+.ev-carseta {
+  position: absolute; top: 50%; transform: translateY(-50%); display: grid; place-items: center;
+  width: 36px; height: 44px; padding: 0 0 3px; border: 0; border-radius: 8px;
+  background: rgba(16, 38, 55, .62); color: #fff; font-size: 24px; line-height: 1; cursor: pointer;
+}
+.ev-carseta:hover { background: rgba(16, 38, 55, .88); }
+.ev-carseta:focus-visible { outline: 2px solid #fff; outline-offset: -3px; background: rgba(16, 38, 55, .88); }
+.ev-carseta.esq { left: 6px; }
+.ev-carseta.dir { right: 6px; }
+.ev-carinfo {
+  position: absolute; right: 7px; bottom: 7px; max-width: calc(100% - 14px); padding: 2px 8px; border-radius: 999px;
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; pointer-events: none;
   background: rgba(16, 38, 55, .82); color: #fff; font-size: 12px; font-weight: 700;
 }
 .ev-semfoto { display: grid; place-items: center; height: 100%; padding: 8px; color: var(--muted); font-size: 12px; text-align: center; }
@@ -102,7 +113,7 @@ body:not([data-aba="eletricos"]) .evOnly { display: none !important; }
 .ev-tiras { display: grid; grid-template-columns: repeat(auto-fill, minmax(78px, 1fr)); gap: 5px; align-content: start; }
 .ev-tiras button { padding: 0; border: 2px solid transparent; border-radius: 7px; background: #e6edf1; overflow: hidden; cursor: pointer; }
 .ev-tiras button.on { border-color: var(--aqua); }
-.ev-tiras img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+.ev-tiras img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
 .ev-tiras span { display: block; padding: 2px 3px; background: var(--paper); font-size: 10px; line-height: 1.15; color: var(--muted); }
 .ev-credito { margin: 5px 0 0; color: var(--muted); font-size: 11.5px; }
 .ev-alertas { margin: 0 0 12px; padding: 10px 12px 10px 28px; background: var(--yellow); border-radius: 9px; font-size: 13px; line-height: 1.45; }
