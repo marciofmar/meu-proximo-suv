@@ -13,6 +13,7 @@ body:not([data-aba="emplacamentos"]) .emOnly { display: none !important; }
   background: transparent; color: var(--ink); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
 }
 .em-seg button[aria-pressed="true"] { background: var(--paper); color: var(--navy); box-shadow: 0 1px 2px rgba(16, 38, 55, .18); }
+.em-filtros select { width: auto; min-height: 40px; font-size: 13px; }
 .em-atualiza { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-left: auto; }
 .em-atualiza .btn { min-height: 38px; }
 .em-status { color: var(--muted); font-size: 12.5px; line-height: 1.3; }
@@ -81,6 +82,7 @@ body:not([data-aba="emplacamentos"]) .emOnly { display: none !important; }
 .em-carrega { padding: 34px; text-align: center; color: var(--muted); background: var(--paper); border: 1px dashed var(--line); border-radius: 14px; }
 
 @media (max-width: 860px) {
+  .em-filtros select { width: 100%; }
   .em-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .em-atualiza { width: 100%; margin-left: 0; }
   .em-atualiza .btn { width: 100%; }

@@ -12,7 +12,7 @@
   const NO_CANAL = { varejo: 'no varejo', direta: 'na venda direta' };
   const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
   const raiz = document.getElementById('painelEmplacamentos');
-  const estado = { escopo: 'todos', periodo: 'mes', canal: 'total', metrica: 'un', ordem: { k: 'total', dir: -1 }, sel: [], cor: {} };
+  const estado = { escopo: 'todos', periodo: 'mes', mes: '', canal: 'total', metrica: 'un', ordem: { k: 'total', dir: -1 }, sel: [], cor: {} };
   let D = null, montado = false, carregando = null, mesHover = null;
 
   const $ = id => document.getElementById(id);
@@ -22,6 +22,12 @@
   const pos = v => (v == null ? '—' : `${v}º`);
   const ult = () => D.meses.length - 1;
   const rotuloRef = () => D.meses[ult()].rotulo;
+  const indiceMes = () => estado.mes ? D.meses.findIndex(m => m.id === estado.mes) : ult();
+  const nomeMes = id => {
+    const [ano, mes] = id.split('-');
+    const nome = MESES[Number(mes) - 1];
+    return `${nome[0].toUpperCase()}${nome.slice(1)} de ${ano}`;
+  };
   const dataBr = iso => iso.split('-').reverse().join('/');
 
   const noEscopo = m => estado.escopo === 'todos' || m.abas.includes(estado.escopo === 'hibridos' ? 'h' : 'e');
@@ -33,27 +39,30 @@
     return m[k];
   }
   function bloco(m, p = estado.periodo, c = estado.canal) {
-    if (p === 'mes') return { un: serie(m, 'un', c)[ult()], geral: serie(m, 'geral', c)[ult()], cat: serie(m, 'cat', c)[ult()] };
+    if (p === 'mes') {
+      const i = indiceMes();
+      return { un: serie(m, 'un', c)[i], geral: serie(m, 'geral', c)[i], cat: serie(m, 'cat', c)[i] };
+    }
     const x = m[p];
     if (c === 'varejo') return { un: x.varejo, geral: x.geralV, cat: x.catV };
     if (c === 'direta') return { un: x.direta, geral: x.geralD, cat: x.catD };
     return { un: x.un, geral: x.geral, cat: x.cat };
   }
   function canaisDe(m, p = estado.periodo) {
-    if (p === 'mes') { const i = ult(); return { total: m.un[i], varejo: m.varejo[i], direta: m.direta[i], tipo: m.tipo[i], oficial: m.oficial[i] }; }
+    if (p === 'mes') { const i = indiceMes(); return { total: m.un[i], varejo: m.varejo[i], direta: m.direta[i], tipo: m.tipo[i], oficial: m.oficial[i] }; }
     const x = m[p];
     return { total: x.un, varejo: x.varejo, direta: x.direta, tipo: x.tipo, oficial: x.oficial };
   }
   function base(p = estado.periodo) {
-    if (p === 'mes') { const x = D.meses[ult()]; return { total: x.total, modelos: x.modelos, cats: x.cats, rotulo: x.rotulo }; }
-    return D.periodos[p];
+    return p === 'mes' ? D.meses[indiceMes()] : D.periodos[p];
   }
-  const rotuloPeriodo = p => (p === 'mes' ? rotuloRef() : p === 'ano' ? D.periodos.ano.rotulo : `12 meses até ${rotuloRef()}`);
+  const rotuloPeriodo = p => (p === 'mes' ? nomeMes(base(p).id) : p === 'ano' ? D.periodos.ano.rotulo : `12 meses até ${rotuloRef()}`);
   const nomeCat = c => D.categorias[c];
 
   function variacao(m) {
     const s = serie(m, 'un');
-    const a = s[ult() - 1], b = s[ult()];
+    const i = indiceMes();
+    const a = s[i - 1], b = s[i];
     return a != null && b != null && a >= BASE_VARIACAO ? (b - a) / a * 100 : null;
   }
 
@@ -103,6 +112,7 @@
       <div class="em-filtros">
         <div class="em-seg" role="group" aria-label="Modelos" id="emEscopo"></div>
         <div class="em-seg" role="group" aria-label="Período" id="emPeriodo"></div>
+        <select id="emMes" data-emc="mes" aria-label="Mês de referência"></select>
         <div class="em-seg" role="group" aria-label="Canal de venda" id="emCanal"></div>
         <div class="em-atualiza"><span id="emStatus" class="em-status" role="status"></span><button id="emAtualizar" class="btn sm primary" data-em="atualizar">↻ Atualizar emplacamentos</button></div>
       </div>
@@ -113,17 +123,28 @@
         <div class="em-chips" id="emChips"></div>
         <div class="em-linha" id="emLinha"></div>
       </section>
-      <section class="em-bloco"><h2 id="emTitTabela"></h2><p class="em-sub">Toque no título de uma coluna para ordenar. As posições acompanham o canal escolhido acima.</p><div class="em-rolagem"><table class="em-tabela" id="emTabela"></table></div><ul class="em-notas" id="emNotas"></ul></section>
+      <section class="em-bloco"><h2 id="emTitTabela"></h2><p class="em-sub">Toque no título de uma coluna para ordenar. As posições acompanham o canal escolhido acima. <span id="emComparacao"></span></p><div class="em-rolagem"><table class="em-tabela" id="emTabela"></table></div><ul class="em-notas" id="emNotas"></ul></section>
       <section class="em-bloco"><h2 id="emTitMensal"></h2><p class="em-sub">Mesmos números do gráfico de evolução, mês a mês.</p><div class="em-rolagem"><table class="em-tabela" id="emMensal"></table></div></section>
       <details class="em-metodo"><summary>Como os números são calculados</summary><ul id="emMetodo"></ul></details>
       <div class="em-tip" id="emTip" hidden></div>`;
   }
 
   // ---------- Desenho ----------
+  function atualizarOpcoesMes() {
+    if (!D.meses.some(m => m.id === estado.mes)) estado.mes = '';
+    const ultimo = D.meses[ult()];
+    const anteriores = D.meses.slice(0, -1).reverse();
+    const seletor = $('emMes');
+    seletor.innerHTML = `<option value="">${esc(nomeMes(ultimo.id))} (mais recente)</option>` +
+      anteriores.map(m => `<option value="${esc(m.id)}">${esc(nomeMes(m.id))}</option>`).join('');
+    seletor.value = estado.mes;
+  }
+
   function desenhar() {
     ajustarSelecao();
     $('emEscopo').innerHTML = seg('escopo', [['todos', 'Todos'], ['hibridos', 'Híbridos'], ['eletricos', 'Elétricos']], estado.escopo);
-    $('emPeriodo').innerHTML = seg('periodo', [['mes', rotuloRef()], ['ano', `Ano ${D.referencia.slice(0, 4)}`], ['doze', '12 meses']], estado.periodo);
+    $('emPeriodo').innerHTML = seg('periodo', [['mes', 'Mensal'], ['ano', `Ano ${D.referencia.slice(0, 4)}`], ['doze', '12 meses']], estado.periodo);
+    $('emMes').hidden = estado.periodo !== 'mes';
     $('emCanal').innerHTML = seg('canal', Object.entries(CANAIS), estado.canal);
     $('emMetrica').innerHTML = seg('metrica', Object.entries(METRICAS), estado.metrica);
     desenharResumo();
@@ -313,19 +334,22 @@
     const { k, dir } = estado.ordem;
     const col = (id, r) => `<th scope="col" aria-sort="${k === id ? (dir > 0 ? 'ascending' : 'descending') : 'none'}"><button data-em="ordem" data-k="${id}">${esc(r)}${k === id ? (dir > 0 ? ' ▲' : ' ▼') : ''}</button></th>`;
     const mes = estado.periodo === 'mes';
+    const i = indiceMes(), anterior = D.meses[i - 1];
     const sufixo = estado.canal === 'total' ? '' : ` (${CANAIS[estado.canal].toLowerCase()})`;
     $('emTitTabela').textContent = `Colocação dos modelos · ${rotuloPeriodo(estado.periodo)}`;
+    $('emComparacao').textContent = mes ? (anterior ? `Variação em relação a ${nomeMes(anterior.id).toLowerCase()}.` : 'O mês anterior está fora da base disponível.') : '';
     $('emTabela').innerHTML = `<thead><tr>${col('nome', 'Modelo')}${col('total', 'Total')}${col('varejo', 'Varejo')}${col('direta', 'Venda direta')}${col('pdir', '% direta')}${mes ? col('var', `Var. no mês${sufixo}`) : ''}${col('geral', `Geral${sufixo}`)}${col('cat', `Categoria${sufixo}`)}</tr></thead><tbody>${L.map(m => {
       const c = canaisDe(m), x = bloco(m), v = mes ? variacao(m) : null;
       const s = serie(m, 'un');
-      const recente = mes && s[ult()] != null && s[ult()] >= BASE_VARIACAO && (s[ult() - 1] == null || s[ult() - 1] < BASE_VARIACAO) && m.un[ult() - 1] < BASE_VARIACAO;
+      const recente = mes && s[i] >= BASE_VARIACAO && (s[i - 1] == null || s[i - 1] < BASE_VARIACAO) && m.un[i - 1] < BASE_VARIACAO;
       const varTxt = v == null ? (recente ? 'novo' : '<span class="em-nd">—</span>') : `${v >= 0 ? '▲' : '▼'} ${pct(Math.abs(v), 0)}%`;
       const pDir = c.direta != null && c.total ? `${pct(c.direta / c.total * 100, 0)}%` : '<span class="em-nd">—</span>';
       return `<tr><th scope="row">${esc(m.nome)}${m.nota ? ' *' : ''}<small>${esc(TIPOS[m.abas])}</small></th><td>${n(c.total)}<small>${c.oficial ? 'Fenabrave' : 'complementar'}</small></td>${celulaCanal(c.varejo, c.tipo === 'v' || c.tipo === 's')}${celulaCanal(c.direta, c.tipo === 'd' || c.tipo === 's')}<td>${pDir}</td>${mes ? `<td>${varTxt}</td>` : ''}${celulaPos(x.geral, b.modelos, '', x.un != null)}${celulaPos(x.cat, b.cats[m.categoria], nomeCat(m.categoria), x.un != null)}</tr>`;
     }).join('')}</tbody>`;
     const vistos = new Set();
     const notas = L.filter(m => m.nota).map(m => {
-      const par = m.divisao && m.divisao.ref === D.referencia ? ` Em ${rotuloRef()}: ${n(m.divisao.ele)} elétricos e ${n(m.divisao.hib)} híbridos (ABVE).` : '';
+      const ref = mes ? D.meses[i] : D.meses[ult()];
+      const par = m.divisao && m.divisao.ref === ref.id ? ` Em ${ref.rotulo}: ${n(m.divisao.ele)} elétricos e ${n(m.divisao.hib)} híbridos (ABVE).` : '';
       return `${m.nome}: ${m.nota}${par}`;
     }).filter(t => !vistos.has(t) && vistos.add(t));
     $('emNotas').innerHTML = notas.map(t => `<li>* ${esc(t)}</li>`).join('');
@@ -382,7 +406,7 @@
       const mudou = novo.referencia !== D.referencia || novo.coletadoEm !== D.coletadoEm;
       const refAntes = D.referencia;
       D = novo;
-      if (mudou) desenhar();
+      if (mudou) { atualizarOpcoesMes(); desenhar(); }
       s.textContent = !mudou ? `Você já tem os dados mais recentes: até ${rotuloRef()}.`
         : novo.referencia !== refAntes ? `Atualizado: agora com dados até ${rotuloRef()}.` : `Atualizado: ${textoStatus()}.`;
     } catch (_) {
@@ -401,6 +425,7 @@
       D = x;
       montado = true;
       estrutura();
+      atualizarOpcoesMes();
       desenhar();
       $('emStatus').textContent = textoStatus();
       new ResizeObserver(() => { if (document.body.dataset.aba === 'emplacamentos') desenharLinha(); }).observe($('emLinha').parentElement);
@@ -435,7 +460,10 @@
     }
   });
   raiz.addEventListener('change', e => {
-    if (e.target.dataset.emc === 'add' && e.target.value) {
+    if (e.target.dataset.emc === 'mes') {
+      estado.mes = e.target.value;
+      desenharResumo(); desenharBarras(); desenharTabela();
+    } else if (e.target.dataset.emc === 'add' && e.target.value) {
       estado.sel = [...estado.sel, e.target.value];
       atribuirCor(e.target.value);
       desenharChips(); desenharLinha();
