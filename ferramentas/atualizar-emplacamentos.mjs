@@ -250,6 +250,7 @@ const modelos = SISTEMA.map(s => {
   }
   return {
     id: s.id, nome: s.nome, abas: s.abas, categoria: c, nota: s.nota || '', divisao: s.divisao || null,
+    ...(s.evolucaoTotal ? { evolucaoTotal: s.evolucaoTotal } : {}),
     un: meses.map(m => m.mapa.get(s.id) || 0),
     geral: meses.map(m => m.geral.pos(s.id)),
     cat: meses.map(m => m.cats[c].pos(s.id)),

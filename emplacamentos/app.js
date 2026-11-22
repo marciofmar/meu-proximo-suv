@@ -38,9 +38,25 @@
     if (c === 'direta') return { un: m.direta, geral: m.geralD, cat: m.catD }[k];
     return m[k];
   }
+  const totalComplementar = (m, i) => m.evolucaoTotal?.meses[D.meses[i]?.id];
+  const faltaRegistro = (m, i) => m.un[i] === 0 && totalComplementar(m, i) > 0;
+
+  function pontosEvolucao(m) {
+    const { canal, metrica } = estado;
+    return serie(m, metrica, canal).map((valor, i) => {
+      const extra = canal === 'total' && metrica === 'un' ? totalComplementar(m, i) : null;
+      if (extra != null) return { valor: extra, fonte: m.evolucaoTotal.fonte };
+      if (m.un[i] === 0) return { valor: null, motivo: 'Sem registro separado no ranking' };
+      if (valor != null) return { valor };
+      return { valor: null, motivo: metrica === 'un' || serie(m, 'un', canal)[i] == null
+        ? 'Sem dado publicado para o canal' : 'Sem posição publicada' };
+    });
+  }
+
   function bloco(m, p = estado.periodo, c = estado.canal) {
     if (p === 'mes') {
       const i = indiceMes();
+      if (faltaRegistro(m, i)) return { un: null, geral: null, cat: null };
       return { un: serie(m, 'un', c)[i], geral: serie(m, 'geral', c)[i], cat: serie(m, 'cat', c)[i] };
     }
     const x = m[p];
@@ -49,7 +65,11 @@
     return { un: x.un, geral: x.geral, cat: x.cat };
   }
   function canaisDe(m, p = estado.periodo) {
-    if (p === 'mes') { const i = indiceMes(); return { total: m.un[i], varejo: m.varejo[i], direta: m.direta[i], tipo: m.tipo[i], oficial: m.oficial[i] }; }
+    if (p === 'mes') {
+      const i = indiceMes();
+      if (faltaRegistro(m, i)) return { total: null, varejo: null, direta: null };
+      return { total: m.un[i], varejo: m.varejo[i], direta: m.direta[i], tipo: m.tipo[i], oficial: m.oficial[i] };
+    }
     const x = m[p];
     return { total: x.un, varejo: x.varejo, direta: x.direta, tipo: x.tipo, oficial: x.oficial };
   }
@@ -62,6 +82,7 @@
   function variacao(m) {
     const s = serie(m, 'un');
     const i = indiceMes();
+    if (faltaRegistro(m, i) || faltaRegistro(m, i - 1)) return null;
     const a = s[i - 1], b = s[i];
     return a != null && b != null && a >= BASE_VARIACAO ? (b - a) / a * 100 : null;
   }
@@ -121,10 +142,11 @@
       <section class="em-bloco">
         <div class="em-cab"><div><h2 id="emTitLinha"></h2></div><div class="em-seg" role="group" aria-label="Medida" id="emMetrica"></div></div>
         <div class="em-chips" id="emChips"></div>
+        <ul class="em-notas em-notas-linha" id="emNotasLinha" hidden></ul>
         <div class="em-linha" id="emLinha"></div>
       </section>
       <section class="em-bloco"><h2 id="emTitTabela"></h2><p class="em-sub">Toque no título de uma coluna para ordenar. As posições acompanham o canal escolhido acima. <span id="emComparacao"></span></p><div class="em-rolagem"><table class="em-tabela" id="emTabela"></table></div><ul class="em-notas" id="emNotas"></ul></section>
-      <section class="em-bloco"><h2 id="emTitMensal"></h2><p class="em-sub">Mesmos números do gráfico de evolução, mês a mês.</p><div class="em-rolagem"><table class="em-tabela" id="emMensal"></table></div></section>
+      <section class="em-bloco"><h2 id="emTitMensal"></h2><p class="em-sub">Mesmos números do gráfico de evolução, mês a mês.</p><div class="em-rolagem"><table class="em-tabela" id="emMensal"></table></div><ul class="em-notas" id="emNotasMensal" hidden></ul></section>
       <details class="em-metodo"><summary>Como os números são calculados</summary><ul id="emMetodo"></ul></details>
       <div class="em-tip" id="emTip" hidden></div>`;
   }
@@ -186,7 +208,7 @@
       const tip = `<strong>${esc(m.nome)}</strong><div>${esc(CANAIS[c])}<em>${n(x.un)}</em></div><div>Geral<em>${esc(textoPos(x.geral, b.modelos, c))}</em></div><div>${esc(nomeCat(m.categoria))}<em>${esc(textoPos(x.cat, b.cats[m.categoria], c))}</em></div>`;
       return `<div class="em-barra" tabindex="0" data-tip="${esc(tip)}" aria-label="${esc(m.nome)}: ${n(x.un)} emplacamentos, geral ${esc(textoPos(x.geral, b.modelos, c))}, em ${esc(nomeCat(m.categoria))} ${esc(textoPos(x.cat, b.cats[m.categoria], c))}"><span>${esc(m.nome)}</span><span class="em-trilho"><i style="width:${(x.un / max * 100).toFixed(2)}%"></i></span><b>${n(x.un)}</b></div>`;
     }).join('');
-    $('emSemDado').textContent = sem.length ? `Sem divisão publicada neste período: ${sem.join(', ')}.` : '';
+    $('emSemDado').textContent = sem.length ? `Sem dados para este recorte: ${sem.join(', ')}.` : '';
   }
 
   function desenharChips() {
@@ -204,6 +226,14 @@
     return (r <= 1 ? 1 : r <= 2 ? 2 : r <= 2.5 ? 2.5 : r <= 5 ? 5 : 10) * p;
   }
 
+  function notaFonte(m) {
+    const { fonte, url, meses } = m.evolucaoTotal;
+    const ids = D.meses.filter(x => Object.hasOwn(meses, x.id)).map(x => x.rotulo);
+    if (!ids.length) return '';
+    const periodo = ids.length === 1 ? ids[0] : `${ids[0]} a ${ids.at(-1)}`;
+    return `Volume total de ${esc(m.nome)} em ${esc(periodo)} segundo a <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(fonte)}</a>. As posições e os canais seguem os rankings do painel.`;
+  }
+
   let grafico = null;
   function desenharLinha() {
     const caixa = $('emLinha');
@@ -214,9 +244,30 @@
     $('emTitLinha').textContent = `Evolução em 12 meses · ${CANAIS[estado.canal]}`;
     const series = estado.sel.map(id => {
       const m = D.modelos.find(x => x.id === id);
-      return { m, v: serie(m, k).map((x, i) => (m.un[i] === 0 ? null : x)), cor: CORES[estado.cor[id]] };
+      const pontos = pontosEvolucao(m);
+      return { m, pontos, v: pontos.map(p => p.valor), cor: CORES[estado.cor[id]] };
     });
     const vals = series.flatMap(s => s.v).filter(v => v != null);
+    const notas = series.flatMap(({ m, pontos }) => {
+      const linhas = [];
+      if (pontos.some(p => p.fonte)) linhas.push(notaFonte(m));
+      const cobertura = pontos.filter(p => p.valor != null).length;
+      if (cobertura < pontos.length) {
+        const motivos = [...new Set(pontos.filter(p => p.motivo).map(p => p.motivo.toLowerCase()))];
+        linhas.push(`<strong>${esc(m.nome)}</strong> tem dados em ${cobertura} de ${pontos.length} meses. Lacunas: ${esc(motivos.join(' ou '))}.`);
+      }
+      if (m.nota) linhas.push(`<strong>${esc(m.nome)}</strong>. ${esc(m.nota)}`);
+      return linhas;
+    });
+    const aviso = $('emNotasLinha');
+    aviso.hidden = !notas.length;
+    aviso.innerHTML = notas.map(t => `<li>${t}</li>`).join('');
+    if (!vals.length) {
+      caixa.innerHTML = '<p class="em-sub">Nenhum dos modelos selecionados tem dados para esta medida e canal no período.</p>';
+      grafico = null;
+      esconderTip();
+      return;
+    }
     const rotulosDiretos = !celular && series.length <= 4;
     const M = { l: celular ? 42 : 52, r: rotulosDiretos ? 136 : 12, t: 12, b: 26 };
     const qtd = D.meses.length;
@@ -244,15 +295,15 @@
       if ((qtd - 1 - i) % cadaX === 0) svg += `<text x="${x(i).toFixed(1)}" y="${H - 8}" text-anchor="${i === qtd - 1 ? 'end' : i === 0 ? 'start' : 'middle'}">${esc(me.rotulo)}</text>`;
     });
     series.forEach(s => {
-      let d = '', novo = true;
+      const conecta = (a, b) => a?.valor != null && b?.valor != null && a.fonte === b.fonte;
+      let d = '';
       s.v.forEach((v, i) => {
-        if (v == null) { novo = true; return; }
-        d += `${novo ? 'M' : 'L'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`;
-        novo = false;
+        if (v == null) return;
+        d += `${conecta(s.pontos[i - 1], s.pontos[i]) ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`;
       });
       if (d) svg += `<path d="${d}" fill="none" stroke="${s.cor}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
       s.v.forEach((v, i) => {
-        if (v != null && s.v[i - 1] == null && s.v[i + 1] == null) svg += `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="${s.cor}"/>`;
+        if (v != null && !conecta(s.pontos[i - 1], s.pontos[i]) && !conecta(s.pontos[i], s.pontos[i + 1])) svg += `<circle cx="${x(i).toFixed(1)}" cy="${y(v).toFixed(1)}" r="3" fill="${s.cor}"/>`;
       });
     });
     if (rotulosDiretos) {
@@ -290,8 +341,9 @@
       return k === 'un' ? p(b) - p(a) : p(a) - p(b);
     }).map(s => {
       const v = s.v[i];
-      const t = v == null ? 'sem dado' : k === 'un' ? n(v) : pos(v);
-      return `<div><i style="background:${s.cor}"></i>${esc(s.m.nome)}<em>${t}</em></div>`;
+      const { motivo, fonte } = s.pontos[i];
+      const t = v == null ? motivo : k === 'un' ? n(v) : pos(v);
+      return `<div><i style="background:${s.cor}"></i>${esc(s.m.nome)}${fonte ? ' (ABVE)' : ''}<em>${esc(t)}</em></div>`;
     }).join('');
     const caixa = $('emLinha').getBoundingClientRect();
     const escala = caixa.width / grafico.W;
@@ -323,8 +375,8 @@
 
   function celulaPos(v, de, rotuloCat, temValor) {
     const c = estado.canal;
-    if (c === 'total') return `<td>${pos(v)}<small>de ${n(de)}${rotuloCat ? ` ${esc(rotuloCat)}` : ''}</small></td>`;
     if (!temValor) return '<td class="em-nd">—</td>';
+    if (c === 'total') return `<td>${pos(v)}<small>de ${n(de)}${rotuloCat ? ` ${esc(rotuloCat)}` : ''}</small></td>`;
     if (v == null) return '<td class="em-nd">—<small>fora do top 50</small></td>';
     return `<td>${pos(v)}<small>${NO_CANAL[c]}${rotuloCat ? ` · ${esc(rotuloCat)}` : ''}</small></td>`;
   }
@@ -341,10 +393,11 @@
     $('emTabela').innerHTML = `<thead><tr>${col('nome', 'Modelo')}${col('total', 'Total')}${col('varejo', 'Varejo')}${col('direta', 'Venda direta')}${col('pdir', '% direta')}${mes ? col('var', `Var. no mês${sufixo}`) : ''}${col('geral', `Geral${sufixo}`)}${col('cat', `Categoria${sufixo}`)}</tr></thead><tbody>${L.map(m => {
       const c = canaisDe(m), x = bloco(m), v = mes ? variacao(m) : null;
       const s = serie(m, 'un');
-      const recente = mes && s[i] >= BASE_VARIACAO && (s[i - 1] == null || s[i - 1] < BASE_VARIACAO) && m.un[i - 1] < BASE_VARIACAO;
+      const recente = mes && !faltaRegistro(m, i - 1) && s[i] >= BASE_VARIACAO && (s[i - 1] == null || s[i - 1] < BASE_VARIACAO) && m.un[i - 1] < BASE_VARIACAO;
       const varTxt = v == null ? (recente ? 'novo' : '<span class="em-nd">—</span>') : `${v >= 0 ? '▲' : '▼'} ${pct(Math.abs(v), 0)}%`;
       const pDir = c.direta != null && c.total ? `${pct(c.direta / c.total * 100, 0)}%` : '<span class="em-nd">—</span>';
-      return `<tr><th scope="row">${esc(m.nome)}${m.nota ? ' *' : ''}<small>${esc(TIPOS[m.abas])}</small></th><td>${n(c.total)}<small>${c.oficial ? 'Fenabrave' : 'complementar'}</small></td>${celulaCanal(c.varejo, c.tipo === 'v' || c.tipo === 's')}${celulaCanal(c.direta, c.tipo === 'd' || c.tipo === 's')}<td>${pDir}</td>${mes ? `<td>${varTxt}</td>` : ''}${celulaPos(x.geral, b.modelos, '', x.un != null)}${celulaPos(x.cat, b.cats[m.categoria], nomeCat(m.categoria), x.un != null)}</tr>`;
+      const total = c.total == null ? '<td class="em-nd">—<small>sem registro separado</small></td>' : `<td>${n(c.total)}<small>${c.oficial ? 'Fenabrave' : 'complementar'}</small></td>`;
+      return `<tr><th scope="row">${esc(m.nome)}${m.nota || m.evolucaoTotal ? ' *' : ''}<small>${esc(TIPOS[m.abas])}</small></th>${total}${celulaCanal(c.varejo, c.tipo === 'v' || c.tipo === 's')}${celulaCanal(c.direta, c.tipo === 'd' || c.tipo === 's')}<td>${pDir}</td>${mes ? `<td>${varTxt}</td>` : ''}${celulaPos(x.geral, b.modelos, '', x.un != null)}${celulaPos(x.cat, b.cats[m.categoria], nomeCat(m.categoria), x.un != null)}</tr>`;
     }).join('')}</tbody>`;
     const vistos = new Set();
     const notas = L.filter(m => m.nota).map(m => {
@@ -352,17 +405,21 @@
       const par = m.divisao && m.divisao.ref === ref.id ? ` Em ${ref.rotulo}: ${n(m.divisao.ele)} elétricos e ${n(m.divisao.hib)} híbridos (ABVE).` : '';
       return `${m.nome}: ${m.nota}${par}`;
     }).filter(t => !vistos.has(t) && vistos.add(t));
-    $('emNotas').innerHTML = notas.map(t => `<li>* ${esc(t)}</li>`).join('');
+    $('emNotas').innerHTML = notas.map(t => `<li>* ${esc(t)}</li>`).join('') + L.filter(m => m.evolucaoTotal).map(m =>
+      `<li>* ${esc(m.nome)}. Esta tabela usa os registros identificados nos rankings e os acumulados podem ser parciais. Consulte o volume da ABVE Data na tabela mês a mês, selecionando Total e Emplacamentos.</li>`).join('');
   }
 
   function desenharMensal() {
     const k = estado.metrica;
     const L = [...lista()].sort((a, b) => b.ano.un - a.ano.un);
     $('emTitMensal').textContent = `${METRICAS[k]} mês a mês · ${CANAIS[estado.canal]}`;
-    $('emMensal').innerHTML = `<thead><tr><th scope="col">Modelo</th>${D.meses.map(x => `<th scope="col">${esc(x.rotulo)}</th>`).join('')}</tr></thead><tbody>${L.map(m => `<tr><th scope="row">${esc(m.nome)}</th>${serie(m, k).map((v, i) => {
-      if (v == null || m.un[i] === 0) return '<td class="em-nd">—</td>';
-      return `<td title="${esc(D.meses[i].rotulo)}">${k === 'un' ? n(v) : pos(v)}</td>`;
+    $('emMensal').innerHTML = `<thead><tr><th scope="col">Modelo</th>${D.meses.map(x => `<th scope="col">${esc(x.rotulo)}</th>`).join('')}</tr></thead><tbody>${L.map(m => `<tr><th scope="row">${esc(m.nome)}</th>${pontosEvolucao(m).map(({ valor, fonte, motivo }, i) => {
+      if (valor == null) return `<td class="em-nd" title="${esc(motivo)}"><span aria-hidden="true">—</span><span class="aria-only">${esc(motivo)}</span></td>`;
+      return `<td title="${esc(fonte || D.meses[i].rotulo)}">${k === 'un' ? n(valor) : pos(valor)}${fonte ? '<small>ABVE</small>' : ''}</td>`;
     }).join('')}</tr>`).join('')}</tbody>`;
+    const notas = estado.canal === 'total' && k === 'un' ? L.filter(m => m.evolucaoTotal).map(notaFonte).filter(Boolean) : [];
+    $('emNotasMensal').hidden = !notas.length;
+    $('emNotasMensal').innerHTML = notas.map(t => `<li>${t}</li>`).join('');
   }
 
   function desenharMetodo() {

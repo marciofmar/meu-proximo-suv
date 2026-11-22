@@ -70,7 +70,19 @@ export const SISTEMA = [
   { id: 'geely/ex5', nome: 'Geely EX5', abas: 'he', nota: COMBINADO, divisao: { ref: '2026-10', ele: 418, hib: 1238 } },
   { id: 'leapmotor/c10', nome: 'Leapmotor C10', abas: 'he', nota: COMBINADO, divisao: { ref: '2026-10', ele: 196, hib: 937 } },
   { id: 'leapmotor/b10', nome: 'Leapmotor B10', abas: 'he', nota: COMBINADO, divisao: { ref: '2026-10', ele: 379, hib: 37 } },
-  { id: 'omoda/e5', nome: 'Omoda E5', abas: 'e' },
+  {
+    id: 'omoda/e5', nome: 'Omoda E5', abas: 'e',
+    evolucaoTotal: {
+      fonte: 'ABVE Data, compilada pela Recarregados',
+      url: 'https://recarregados.com/dados/emplacamentos-eletricos-hibridos',
+      // Série nacional BEV, versão 2026-10. As posições da ABVE cobrem outro universo.
+      meses: {
+        '2025-11': 67, '2025-12': 68, '2026-01': 39, '2026-02': 62,
+        '2026-03': 68, '2026-04': 115, '2026-05': 81, '2026-06': 36,
+        '2026-07': 17, '2026-08': 115, '2026-09': 132, '2026-10': 62
+      }
+    }
+  },
   { id: 'gwm/ora-05', nome: 'GWM Ora 5', abas: 'e' },
   { id: 'mg/s5', nome: 'MG S5', abas: 'e' },
   { id: 'baic/arcfox-t5-novo', nome: 'BAIC Arcfox T5', abas: 'e' },
