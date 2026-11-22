@@ -1,0 +1,45 @@
+.hybrid-photo-card, .hybrid-photo-large { position: relative; }
+.hybrid-photo-arrow {
+  position: absolute;
+  top: 45%;
+  z-index: 1;
+  width: 33px;
+  height: 33px;
+  border: 1px solid rgba(255,255,255,.6);
+  border-radius: 50%;
+  background: #153648;
+  color: #fff;
+  font-size: 24px;
+  cursor: pointer;
+  display: grid;
+  place-content: center;
+}
+.hybrid-photo-arrow.previous { left: 8px; }
+.hybrid-photo-arrow.next { right: 8px; }
+.hybrid-photo-missing { display: block; padding: 12px 6px; color: var(--muted); font-size: .8rem; text-align: center; }
+.hybrid-photo-missing[hidden] { display: none; }
+.hybrid-photo-card img[hidden], .hybrid-photo-large img[hidden], .hybrid-photo-thumbs img[hidden], .hybrid-compare-photo img[hidden] { display: none; }
+.hybrid-photo-credit { margin: 8px 0; }
+.hybrid-photo-thumbs { display: grid; grid-template-columns: repeat(auto-fill,minmax(105px,1fr)); gap: 7px; margin: 10px 0; }
+.hybrid-photo-thumbs button, .hybrid-compare-photo {
+  padding: 0;
+  border: 1px solid #d1dde5;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #eef4f7;
+  color: var(--ink);
+  cursor: pointer;
+}
+.hybrid-photo-thumbs button[aria-pressed="true"] { outline: 2px solid #058a8d; outline-offset: 1px; }
+.hybrid-photo-thumbs img, .hybrid-compare-photo img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 10; object-fit: contain; }
+.hybrid-photo-thumbs span { display: block; padding: 4px; font-size: .75rem; }
+.hybrid-compare-photo { display: block; width: 100%; }
+.hybrid-compare-tools { display: flex; flex-wrap: wrap; gap: 8px 16px; margin: 0 0 10px; align-items: center; }
+.hybrid-compare-tools select { max-width: min(100%, 350px); }
+.hybrid-compare-angles { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 10px; }
+.hybrid-compare-angles button[aria-pressed="true"] { background: #146e74; color: #fff; }
+.hybrid-compare-group button { width: 100%; text-align: left; }
+.hybrid-compare-source { display: inline-block; margin-left: 3px; font-size: .74rem; }
+.hybrid-spec-group { margin-bottom: 8px; border: 1px solid #d1dde5; border-radius: 8px; }
+.hybrid-spec-group summary { padding: 8px 12px; font-weight: 650; cursor: pointer; }
+.hybrid-spec-group .kv { padding-inline: 12px; }

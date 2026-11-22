@@ -60,7 +60,7 @@
       const d = { ...base, ...lerLinhas(ver.dados) };
       d.marcaModelo = { v: `${m.marca} ${m.modelo}`, s: [] };
       d.versao = { v: ver.nome, s: [] };
-      return { id: `${m.id}:${ver.id}`, m, ver, d, nome: `${m.marca} ${m.modelo}`, curto: ver.nome === 'Versão única' ? m.modelo : `${m.modelo} ${ver.nome}` };
+      return { id: `${m.id}:${ver.id}`, m, ver, d, fotos: ver.fotos ?? m.fotos, nome: `${m.marca} ${m.modelo}`, curto: ver.nome === 'Versão única' ? m.modelo : `${m.modelo} ${ver.nome}` };
     });
   });
   const carro = id => CARROS.find(c => c.id === id);
@@ -153,10 +153,15 @@
   };
   const imagem = (url, alt, lazy = true) => `<img src="${esc(url)}" alt="${esc(alt)}" ${lazy ? 'loading="lazy"' : ''} decoding="async" referrerpolicy="no-referrer" onerror="this.outerHTML='<span class=&quot;ev-semfoto&quot;>Foto indisponível na fonte</span>'">`;
 
+  function creditoFoto([angulo, url, fonte]) {
+    if (fonte) return `${esc(angulo)} · <a href="${esc(fonte)}" target="_blank" rel="noopener noreferrer">${esc(hostCredito(fonte))}</a>`;
+    return `${esc(angulo)} · Foto de divulgação via ${esc(hostCredito(url))}. Cor e versão podem diferir.`;
+  }
+
   function fotoDoAngulo(c, ang) {
-    const i = c.m.fotos.findIndex(f => f[0] === ang);
+    const i = c.fotos.findIndex(f => f[0] === ang);
     if (i >= 0) return i;
-    return c.m.fotos.findIndex(f => f[0].startsWith(ang + ' ('));
+    return c.fotos.findIndex(f => f[0].startsWith(ang + ' ('));
   }
 
   // ---------- Painel principal ----------
@@ -185,15 +190,15 @@
   // ---------- Carrossel de fotos dos cartões ----------
   const fotoCard = {};
   let ultimoDeslize = 0;
-  const textoFoto = (c, i) => `${c.m.fotos[i][0]} · ${i + 1}/${c.m.fotos.length}`;
+  const textoFoto = (c, i) => `${c.fotos[i][0]} · ${i + 1}/${c.fotos.length}`;
 
   function carrossel(c) {
     const i = fotoCard[c.id] || 0;
-    const f = c.m.fotos[i];
+    const f = c.fotos[i];
     return `<div class="ev-carrossel" data-carro="${esc(c.id)}" role="group" aria-roledescription="carrossel" aria-label="Fotos de ${esc(c.nome)} ${esc(c.ver.nome)}">
       <button class="ev-foto" data-ev="galeria" data-id="${esc(c.id)}" data-foto="${i}" aria-label="Ampliar foto: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`)}</button>
-      <button class="ev-carseta esq" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="-1" aria-label="Foto anterior de ${esc(c.curto)}">‹</button>
-      <button class="ev-carseta dir" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="1" aria-label="Próxima foto de ${esc(c.curto)}">›</button>
+      ${c.fotos.length > 1 ? `<button class="ev-carseta esq" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="-1" aria-label="Foto anterior de ${esc(c.curto)}">‹</button>
+      <button class="ev-carseta dir" data-ev="cardpasso" data-id="${esc(c.id)}" data-p="1" aria-label="Próxima foto de ${esc(c.curto)}">›</button>` : ''}
       <span class="ev-carinfo" aria-live="polite">${esc(textoFoto(c, i))}</span>
     </div>`;
   }
@@ -208,10 +213,10 @@
   function moverCard(id, passo) {
     const c = carro(id);
     const caixa = document.querySelector(`.ev-carrossel[data-carro="${id}"]`);
-    if (!c || !caixa) return;
-    const qtd = c.m.fotos.length;
+    if (!c || !caixa || c.fotos.length < 2) return;
+    const qtd = c.fotos.length;
     const i = ((fotoCard[id] || 0) + passo + qtd) % qtd;
-    const f = c.m.fotos[i];
+    const f = c.fotos[i];
     fotoCard[id] = i;
     caixa.querySelector('.ev-carinfo').textContent = textoFoto(c, i);
     const botao = caixa.querySelector('.ev-foto');
@@ -220,7 +225,7 @@
     // Troca só depois de carregar, para a foto anterior não sumir enquanto a nova chega.
     const nova = preCarregar(f[1]);
     nova.onload = nova.onerror = () => { if (fotoCard[id] === i) botao.innerHTML = imagem(f[1], `${c.nome}: ${f[0]}`, false); };
-    preCarregar(c.m.fotos[(i + passo + qtd) % qtd][1]);
+    preCarregar(c.fotos[(i + passo + qtd) % qtd][1]);
   }
 
   function cartao(c) {
@@ -261,7 +266,7 @@
     const b = $('evBandeja');
     b.hidden = estado.sel.length === 0;
     if (b.hidden) return;
-    $('evMini').innerHTML = estado.sel.map(id => { const c = carro(id); return imagem(c.m.fotos[0][1], c.curto); }).join('');
+    $('evMini').innerHTML = estado.sel.map(id => { const c = carro(id); return imagem(c.fotos[0][1], c.curto); }).join('');
     $('evComparar').textContent = estado.sel.length < 2 ? 'Escolha mais 1' : `Comparar ${estado.sel.length}`;
     $('evComparar').disabled = estado.sel.length < 2;
   }
@@ -288,7 +293,7 @@
     const c = carro(id);
     fichaAtual = { id, foto };
     const sel = estado.sel.includes(id);
-    const f = c.m.fotos[foto];
+    const f = c.fotos[foto];
     const preenchidos = ITENS.filter(i => temDado(c, i)).length;
     $('evDialogoTitulo').textContent = `${c.nome} · ${c.ver.nome}`;
     $('evDialogoSub').textContent = `${reais(num(c, 'preco'))} · ${preenchidos} de ${ITENS.length} quesitos com dado`;
@@ -296,8 +301,8 @@
     corpo.classList.remove('ev-semrolagem');
     corpo.innerHTML = `<div class="ev-galeria">
         <div><button class="ev-foto" data-ev="luz" data-id="${esc(id)}" data-foto="${foto}" aria-label="Ampliar foto: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`, false)}</button>
-        <p class="ev-credito">${esc(f[0])} · Foto de divulgação via ${esc(hostCredito(f[1]))}. Cor e versão podem diferir.</p></div>
-        <div class="ev-tiras">${c.m.fotos.map((x, i) => `<button class="${i === foto ? 'on' : ''}" data-ev="trocafoto" data-foto="${i}" aria-label="Foto: ${esc(x[0])}">${imagem(x[1], '')}<span>${esc(x[0])}</span></button>`).join('')}</div>
+        <p class="ev-credito">${creditoFoto(f)}</p></div>
+        <div class="ev-tiras">${c.fotos.map((x, i) => `<button class="${i === foto ? 'on' : ''}" data-ev="trocafoto" data-foto="${i}" aria-label="Foto: ${esc(x[0])}">${imagem(x[1], '')}<span>${esc(x[0])}</span></button>`).join('')}</div>
       </div>
       <div style="display:flex;gap:7px;margin-bottom:12px"><button class="btn sm ${sel ? 'active' : ''}" data-ev="alternarFicha" data-id="${esc(id)}">${sel ? '✓ Na comparação' : '＋ Adicionar à comparação'}</button></div>
       ${c.m.alertas.length ? `<ul class="ev-alertas">${c.m.alertas.map(a => `<li>${esc(a)}</li>`).join('')}</ul>` : ''}
@@ -313,10 +318,10 @@
   function trocaFoto(i) {
     if (!fichaAtual) return;
     const c = carro(fichaAtual.id);
-    const f = c.m.fotos[i];
+    const f = c.fotos[i];
     fichaAtual.foto = i;
     const area = document.querySelector('#evDialogoCorpo .ev-galeria > div');
-    area.innerHTML = `<button class="ev-foto" data-ev="luz" data-id="${esc(c.id)}" data-foto="${i}" aria-label="Ampliar foto: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`, false)}</button><p class="ev-credito">${esc(f[0])} · Foto de divulgação via ${esc(hostCredito(f[1]))}. Cor e versão podem diferir.</p>`;
+    area.innerHTML = `<button class="ev-foto" data-ev="luz" data-id="${esc(c.id)}" data-foto="${i}" aria-label="Ampliar foto: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`, false)}</button><p class="ev-credito">${creditoFoto(f)}</p>`;
     document.querySelectorAll('#evDialogoCorpo .ev-tiras button').forEach((b, n) => b.classList.toggle('on', n === i));
   }
 
@@ -377,7 +382,7 @@
         <tbody><tr><th scope="row">Foto: ${esc(cmp.angulo)}</th>${cars.map(c => {
           const i = fotoDoAngulo(c, cmp.angulo);
           if (i < 0) return '<td class="ev-fcel"><div class="ev-foto" style="cursor:default"><span class="ev-semfoto">Sem foto deste ângulo</span></div></td>';
-          const f = c.m.fotos[i];
+          const f = c.fotos[i];
           return `<td class="ev-fcel"><button class="ev-foto" data-ev="luz" data-id="${esc(c.id)}" data-foto="${i}" aria-label="Ampliar ${esc(c.curto)}: ${esc(f[0])}">${imagem(f[1], `${c.nome}: ${f[0]}`)}</button></td>`;
         }).join('')}</tr></tbody>
         ${blocos || `<tbody><tr><td colspan="${cars.length + 1}">Nenhuma diferença entre as versões escolhidas.</td></tr></tbody>`}
@@ -392,13 +397,13 @@
   let luz = null;
   function abrirLuz(id, i) {
     const c = carro(id);
-    const n = c.m.fotos.length;
+    const n = c.fotos.length;
     i = (i + n) % n;
     luz = { id, i };
-    const f = c.m.fotos[i];
-    $('evLuzTitulo').textContent = `${c.nome} · ${f[0]}`;
-    $('evLuzImg').innerHTML = `${imagem(f[1], `${c.nome}: ${f[0]}`, false)}<button class="ev-seta esq" data-ev="luzpasso" data-p="-1" aria-label="Foto anterior">‹</button><button class="ev-seta dir" data-ev="luzpasso" data-p="1" aria-label="Próxima foto">›</button>`;
-    $('evLuzPe').textContent = `${i + 1} de ${n} · Foto de divulgação via ${hostCredito(f[1])}. Cor e versão podem diferir.`;
+    const f = c.fotos[i];
+    $('evLuzTitulo').textContent = `${c.nome} · ${c.ver.nome} · ${f[0]}`;
+    $('evLuzImg').innerHTML = `${imagem(f[1], `${c.nome}: ${f[0]}`, false)}${n > 1 ? `<button class="ev-seta esq" data-ev="luzpasso" data-p="-1" aria-label="Foto anterior">‹</button><button class="ev-seta dir" data-ev="luzpasso" data-p="1" aria-label="Próxima foto">›</button>` : ''}`;
+    $('evLuzPe').innerHTML = `${i + 1} de ${n} · ${creditoFoto(f)}`;
     const d = $('evLuz');
     if (!d.open) d.showModal();
   }

@@ -153,7 +153,11 @@ lombar=ausente @5,6
 retrovisoresRebatimento=ausente: elétricos e aquecidos, sem rebatimento @5,6
 leitorPlacas=ausente: versão sem pacote ADAS @9
 consumoInmetro=— | Eficiência declarada de 5,5 km/kWh, equivalente a cerca de 18,2 kWh/100 km. O levantamento não identifica esse valor como medição PBEV da versão. @9
-autonomiaWltp=— | O levantamento informa 278 km no Inmetro. Os até 430 km WLTP referem-se à Prestige. @9` },
+autonomiaWltp=— | O levantamento informa 278 km no Inmetro. Os até 430 km WLTP referem-se à Prestige. @9`, fotos: [
+          ['Dianteira 3/4 (Elite do Uruguai)', 'https://www.encontracarros.com.br/wp-content/uploads/2026/11/novo-omoda-5-2027-10.jpg', 'https://www.encontracarros.com.br/omoda-e5-2027-chega-ao-brasil/'],
+          ['Painel', 'https://primoauto.com.br/uploads/publicacoes/omoda-e5-2027-elite-interior-tela-12-3.webp', 'https://primoauto.com.br/novo-omoda-e5-2027-precos-elite-prestige-comparativo'],
+          ['Central multimídia', 'https://www.comprecar.com.br/blog/wp-content/uploads/2026/11/clipboard-6-1024x558.webp', 'https://www.comprecar.com.br/blog/omoda-e5-2027-elite-prestige-diferencas/']
+        ] },
         { id: 'prestige', nome: 'Prestige', dados: `
 preco=184990 @1
 capacidadeNominal=60.9 @1
@@ -191,15 +195,14 @@ cargaUtil=518 @5
 pesoBruto=2260 @5
 multimidia=Tela UHD de 15,6 pol @5,6
 alertaFadiga=serie: monitoramento do motorista (DMS) @5,6
-leitorPlacas=serie: integrado ao ADAS @9` }
-      ],
-      fotos: [
-        ['Frente', EC + '2026/11/omoda-e5_2027_07.jpg'], ['Dianteira 3/4', EC + '2026/11/omoda-e5_2027.jpg'],
-        ['Lateral', EC + '2026/11/omoda-e5_2027_15.jpg'], ['Traseira 3/4', EC + '2026/11/omoda-e5_2027_06.jpg'],
-        ['Traseira', EC + '2026/11/omoda-e5_2027_08.jpg'], ['Painel', EC + '2026/11/omoda-e5_2027_10.jpg'],
-        ['Instrumentos', EC + '2026/11/omoda-e5_2027_11.jpg'], ['Bancos dianteiros', EC + '2026/11/omoda-e5_2027_12.jpg'],
-        ['Bancos traseiros', EC + '2026/11/omoda-e5_2027_13.jpg'], ['Lanterna', EC + '2026/11/omoda-e5_2027_03.jpg'],
-        ['Roda', EC + '2026/11/omoda-e5_2027_04.jpg']
+leitorPlacas=serie: integrado ao ADAS @9`, fotos: [
+          ['Dianteira 3/4', 'https://www.encontracarros.com.br/wp-content/uploads/2026/11/omoda-e5_2027.jpg', 'https://www.encontracarros.com.br/omoda-e5-2027-chega-ao-brasil/'],
+          ['Frente', 'https://www.encontracarros.com.br/wp-content/uploads/2026/11/omoda-e5_2027_07.jpg', 'https://www.encontracarros.com.br/omoda-e5-2027-chega-ao-brasil/'],
+          ['Traseira', 'https://www.comprecar.com.br/blog/wp-content/uploads/2026/11/clipboard-9.webp', 'https://www.comprecar.com.br/blog/omoda-e5-2027-elite-prestige-diferencas/'],
+          ['Painel', 'https://primoauto.com.br/uploads/publicacoes/omoda-e5-2027-prestige-interior-tela-15-6.webp', 'https://primoauto.com.br/novo-omoda-e5-2027-precos-elite-prestige-comparativo'],
+          ['Bancos dianteiros', 'https://www.encontracarros.com.br/wp-content/uploads/2026/11/omoda-e5_2027_12.jpg', 'https://www.encontracarros.com.br/omoda-e5-2027-chega-ao-brasil/'],
+          ['Roda', 'https://www.comprecar.com.br/blog/wp-content/uploads/2026/11/clipboard-5-1024x675.webp', 'https://www.comprecar.com.br/blog/omoda-e5-2027-elite-prestige-diferencas/']
+        ] }
       ]
     },
     {
@@ -615,7 +618,9 @@ iluminacaoAmbiente=ausente: só iluminação interna em LED @1
 autonomiaWltp=?430 | Homologação internacional da versão com rodas de 18 pol. @10
 alertaFadiga=ausente: sem monitor de fadiga de série @10
 memoria=ausente @10
-bancosAquecidos=ausente @10` },
+bancosAquecidos=ausente @10`, fotos: [
+          ['Dianteira 3/4', 'https://static.autodromo.com.br/uploads/29028504-4e03-4513-942b-eb4bfe8d798f_ex5-pro-cinza-1.webp?height=400&width=600', 'https://www.geelybrasil.com.br/jorlan-df/ofertas-geely-ex5-bev-eletrico']
+        ] },
         { id: 'max', nome: 'Max', dados: `
 preco=227800 @2
 massa=1765 @1
@@ -645,15 +650,17 @@ iluminacaoAmbiente=serie: 256 cores @1
 bancosAquecidos=serie: dianteiros @7,8
 autonomiaWltp=?410 | Homologação internacional da versão com rodas de 19 pol. @10
 memoria=serie: motorista, com entrada e saída ativa @10
-barrasTeto=serie: longitudinais integradas @10` }
-      ],
-      fotos: [
-        ['Dianteira 3/4', AE + '2025/07/CAPA-1.jpg'], ['Dianteira 3/4 (branco)', EC + '2025/06/geely-ex5-2026.jpg'],
-        ['Frente', AE + '2025/07/AE-Geely-EX5-divulgacao-7-1.jpg'], ['Traseira 3/4', AE + '2025/07/AE-Geely-EX5-divulgacao-2-1.jpg'],
-        ['Traseira', AE + '2025/07/AE-Geely-EX5-divulgacao-8-scaled-e1753734284374.jpg'], ['Painel', AE + '2025/07/AE-Geely-EX5-divulgacao-3-1.jpg'],
-        ['Interior claro', EC + '2025/06/geely-ex5-2026-04.jpg'], ['Bancos dianteiros', AE + '2025/07/AE-Geely-EX5-divulgacao-4-1-scaled-e1753734686629.jpg'],
-        ['Bancos traseiros (com gaveta)', AE + '2025/07/AE-Geely-EX5-divulgacao-5-1.jpg'], ['Porta-malas', AE + '2025/07/AE-Geely-EX5-divulgacao-6-1-800x450.jpg'],
-        ['Fundo do porta-malas', AE + '2025/07/AE-Geely-EX5-divulgacao-17-800x450.jpg'], ['Roda', AE + '2025/07/AE-Geely-EX5-divulgacao-10-scaled-e1753734905183.jpg']
+barrasTeto=serie: longitudinais integradas @10`, fotos: [
+          ['Dianteira 3/4', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/CAPA-1.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Frente', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-7-1.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Traseira 3/4', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-2-1.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Traseira', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-8-scaled-e1753734284374.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Painel', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-3-1.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Bancos dianteiros', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-4-1-scaled-e1753734686629.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Bancos traseiros', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-5-1.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Porta-malas', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-6-1-800x450.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/'],
+          ['Roda', 'https://autoentusiastas.com.br/ae/wp-content/uploads/2025/07/AE-Geely-EX5-divulgacao-10-scaled-e1753734905183.jpg', 'https://autoentusiastas.com.br/2025/07/geely-ex5-primeiras-impressoes/']
+        ] }
       ]
     },
     {
@@ -671,7 +678,7 @@ barrasTeto=serie: longitudinais integradas @10` }
         ['Auto-Data (outro mercado)', 'https://www.auto-data.net/es/leapmotor-c10-69.9-kwh-218hp-bev-55063', 'sem data'],
         LEVANTAMENTO
       ],
-      alertas: ['As fotos de bancos e porta-malas são da versão híbrida REEV.'],
+      alertas: [],
       comum: `
 anoModelo=2027 @2
 origem=China, marca do grupo Stellantis @5
@@ -794,12 +801,15 @@ vidrosAcusticos=confirmar: isolamento acústico não especificado @11
 descargaMax=3.3 @11`,
       versoes: [{ id: 'bev', nome: 'Elétrico (BEV)', dados: '' }],
       fotos: [
-        ['Dianteira 3/4', EC + '2025/11/leapmotor-c10_01.jpg'], ['Frente', EC + '2026/08/leapmotor-c10_18.jpg'],
-        ['Lateral', EC + '2025/11/leapmotor-c10_02.jpg'], ['Traseira 3/4', EC + '2025/11/leapmotor-c10_03.jpg'],
-        ['Traseira', EC + '2025/11/leapmotor-c10_14.jpg'], ['Painel', EC + '2025/11/leapmotor-c10_09.jpg'],
-        ['Volante e tela', EC + '2025/11/leapmotor-c10_06.jpg'], ['Bancos dianteiros (versão REEV)', EC + '2026/08/leapmotor-c10_reev-02.jpg'],
-        ['Porta-malas (versão REEV)', EC + '2026/08/leapmotor-c10_reev-04.jpg'], ['Porta-malas dianteiro', EC + '2025/11/leapmotor-c10_10.jpg'],
-        ['Tomada de recarga', EC + '2025/11/leapmotor-c10_15.jpg']
+        ['Dianteira 3/4', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-1-1.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Lateral', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-2.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Traseira 3/4', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-3-1.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Painel', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-6.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Bancos dianteiros', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-9.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Bancos traseiros', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-10.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Porta-malas', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-13.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Porta-malas dianteiro', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-12.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes'],
+        ['Roda', 'https://images.noticiasautomotivas.com.br/img/f/2026/07/avaliacao-leapmotor-c10-bev-verde-4.webp', 'https://www.noticiasautomotivas.com.br/avaliacao-leapmotor-c10-bev-acerta-em-autonomia-acabamento-e-conforto-porem-exagera-na-ausencia-de-comandos-fisicos-nas-telas-e-nos-alertas-irritantes']
       ]
     },
     {
@@ -936,7 +946,9 @@ bancosAquecidos=ausente @13
 volanteAquecido=ausente @13,14
 iluminacaoAmbiente=confirmar: item não listado de série na Comfort @13
 alertaFadiga=ausente: monitoramento da atenção exclusivo da Luxury @14
-farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14` },
+farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14`, fotos: [
+          ['Dianteira 3/4', 'https://mgmotoroficial.com.br/imagens/mgs5/MGS5-color-sombra/comfort-color-mgs5-silver.webp', 'https://mgmotoroficial.com.br/oferta/mgs5/']
+        ] },
         { id: 'luxury', nome: 'Luxury', dados: `
 preco=238800 @1
 zeroCem=6.3 @2,6,8
@@ -967,14 +979,10 @@ volanteAquecido=serie @13,14
 pneus=225/55 R18 @13,14
 bancosVentilados=serie: dianteiros @14
 alertaFadiga=serie: monitoramento da atenção do motorista (DAW) @13,14
-farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14` }
-      ],
-      fotos: [
-        ['Dianteira 3/4', EC + '2025/12/mg-s5-2026_03.jpg'], ['Frente', EC + '2025/12/mg-s5-2026_02.jpg'],
-        ['Lateral', EC + '2025/12/mg-s5-2026_06.jpg'], ['Traseira 3/4', EC + '2025/12/mg-s5-2026_07.jpg'],
-        ['Traseira', EC + '2025/12/mg-s5-2026_08.jpg'], ['Painel', EC + '2025/12/mg-s5-interior_02.jpg'],
-        ['Volante e telas', EC + '2025/12/mg-s5-interior_06.jpg'], ['Bancos dianteiros', EC + '2025/12/mg-s5-interior_04.jpg'],
-        ['Bancos traseiros', EC + '2025/12/mg-s5-interior_03.jpg'], ['Porta-malas', EC + '2025/12/mg-s5-interior_05.jpg']
+farolAltoAuto=serie: controle inteligente de farol alto (IHC) @13,14`, fotos: [
+          ['Dianteira 3/4', 'https://mgmotoroficial.com.br/imagens/mgs5/MGS5-color-sombra/luxury-color-mgs5-silver.webp', 'https://mgmotoroficial.com.br/oferta/mgs5/'],
+          ['Dianteira 3/4 (teste no Brasil)', 'https://s2-autoesporte.glbimg.com/ixqPUrP8yJsPq-i2C0SXvJgXz5Q=/i.s3.glbimg.com/v1/AUTH_cf9d035bf26b4646b105bd958f32089d/internal_photos/bs/2026/J/t/bHjT4pTOGnEF4Ngc5nuQ/mg-s5-luxury-1-frente-diagonal.jpg', 'https://www.gruposentinela.com.br/teste-mg-s5-aposta-em-heranca-britanica-para-se-destacar-entre-chineses/']
+        ] }
       ]
     },
     {
@@ -1269,7 +1277,8 @@ volanteAquecido=ausente @11`,
         ['Carros na Web (ficha)', 'https://www.carrosnaweb.com.br/fichadetalhe.asp?codigo=44285', 'sem data'],
         ['Ficha Completa', 'https://www.fichacompleta.com.br/en/carros/gac/aion-v-elite-2026', 'sem data'],
         ['CarExpert Austrália (outro mercado)', 'https://www.carexpert.com.au/gac/aion-v/2026/luxury/features-and-specs', 'sem data'],
-        LEVANTAMENTO
+        LEVANTAMENTO,
+        ['Self Drive Brasil (Aion V Elite)', 'https://www.selfdrivebrasil.com.br/veiculo/gac-aion-v-elite-2027', 'consultada em 21/11/2026']
       ],
       alertas: ['As fontes divergem sobre conexão sem fio de CarPlay e Android Auto. Teste com seu celular.'],
       comum: `
@@ -1333,7 +1342,7 @@ camera360=serie @1
 sensoresEstacionamento=serie: dianteiros e traseiros @1
 telaCentral=14.6 @1
 painelDigital=8.88 @2
-headUp=confirmar: citado só pelo Verificar Auto @4
+headUp=confirmar: Verificar Auto cita o item. Self Drive Brasil indica indisponibilidade. @4,11
 multimidia=Tela de 14,6 pol com Wi-Fi e OTA @2
 carplayAndroid=confirmar: DGABC diz CarPlay com fio e Android Auto sem fio; outras fontes divergem @1,2,4,5
 vozPortugues=confirmar: menus em português; uma fonte diz comandos de voz só em inglês @2,5

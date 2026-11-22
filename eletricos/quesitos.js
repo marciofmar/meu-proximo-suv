@@ -111,7 +111,7 @@ window.EV_GRUPOS = [
   { id: 'tec', nome: 'Tecnologia e conectividade', itens: [
     ['telaCentral', 'Tela central', 'n', 'pol', 'mais'],
     ['painelDigital', 'Painel digital', 'n', 'pol', 'mais'],
-    ['headUp', 'Head-up display', 'e'],
+    ['headUp', 'Head-up display (HUD)', 'e'],
     ['multimidia', 'Sistema multimídia', 't'],
     ['carplayAndroid', 'Android Auto e Apple CarPlay', 'e'],
     ['vozPortugues', 'Assistente de voz em português', 'e'],

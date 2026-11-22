@@ -116,6 +116,7 @@ body:not([data-aba="eletricos"]) .evOnly { display: none !important; }
 .ev-tiras img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
 .ev-tiras span { display: block; padding: 2px 3px; background: var(--paper); font-size: 10px; line-height: 1.15; color: var(--muted); }
 .ev-credito { margin: 5px 0 0; color: var(--muted); font-size: 11.5px; }
+.ev-credito a, #evLuzPe a { color: inherit; text-decoration: underline; }
 .ev-alertas { margin: 0 0 12px; padding: 10px 12px 10px 28px; background: var(--yellow); border-radius: 9px; font-size: 13px; line-height: 1.45; }
 .ev-grupo { margin-bottom: 7px; border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
 .ev-grupo > summary { padding: 10px 12px; background: var(--bg); font-weight: 800; cursor: pointer; }
