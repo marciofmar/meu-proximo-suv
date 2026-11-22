@@ -4,7 +4,6 @@
   const groups = [
     ['mercado', 'Identificação e mercado', [
       ['Preço anunciado', 'price', 'money', 'less'],
-      ['Diferença simulada vs. seu usado', 'difference', 'money', 'less'],
       ['Condição do preço', 'priceStatus'],
       ['Garantia informada', 'warranty'],
       ['Garantia da bateria', 'batteryWarranty'],
@@ -130,7 +129,6 @@
       const value = values?.[key];
       return { value: value ?? (key.startsWith('eta') && model.features.flex === false ? 'Não se aplica' : null), source: value == null ? null : source };
     }
-    if (key === 'difference') return { value: model.price == null ? null : model.price - state.usedValue };
     if (type === 'bool') {
       const [source, spec] = window.PHEV_TECNICA[model.id]?.spec ?? [];
       return { value: model.features[key], source: typeof spec?.[key] === 'boolean' ? source : null };
@@ -158,13 +156,12 @@
       .filter(([, cells]) => !view.differences || new Set(cells.map(c => c.value ?? null)).size > 1);
     if (!entries.length) return '';
     const closed = view.closed.has(id);
-    const content = entries.map(([[label, key, type, direction, unit], cells]) => {
+    const content = entries.map(([[label, , type, direction, unit], cells]) => {
       const numbers = cells.map(c => c.value).filter(Number.isFinite);
       const best = direction && new Set(numbers).size > 1 ? (direction === 'less' ? Math.min(...numbers) : Math.max(...numbers)) : null;
-      return `<tr><th scope="row">${esc(label)}</th>${cells.map(c => {
-        const big = (key === 'width' || key === 'height') && c.value > REFERENCE[key];
-        return `<td class="${best !== null && c.value === best ? 'good' : ''} ${big ? 'big' : ''}">${display(c, type, unit)}</td>`;
-      }).join('')}</tr>`;
+      return `<tr><th scope="row">${esc(label)}</th>${cells.map(c =>
+        `<td class="${best !== null && c.value === best ? 'good' : ''}">${display(c, type, unit)}</td>`
+      ).join('')}</tr>`;
     }).join('');
     return `<tbody><tr class="hybrid-compare-group"><th scope="rowgroup" colspan="${members.length + 1}"><button class="btn sm soft" data-action="compareGroup" data-key="${id}" aria-expanded="${!closed}">${closed ? '▸' : '▾'} ${esc(title)} · ${entries.length}</button></th></tr>${closed ? '' : content}</tbody>`;
   }

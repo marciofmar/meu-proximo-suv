@@ -6,7 +6,7 @@ Painel interativo para comparar SUVs até R$ 300 mil, em três abas: híbridos p
 
 ## Aba de híbridos
 
-Você define o que é indispensável, veta o que não aceita, ajusta os pesos de cada critério e chega a poucos finalistas. A referência de comparação é um BYD Song Plus DM-i 2023.
+Você define o que é indispensável, veta o que não aceita, ajusta os pesos de cada critério e chega a poucos finalistas. A tabela permite comparar até quatro versões lado a lado.
 
 A cada mudança de filtro, um pop-up mostra os modelos que saíram ou entraram e o dado que justificou cada mudança.
 
